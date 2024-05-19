@@ -13,3 +13,6 @@ class Utente(models.Model):
     class Meta:
         verbose_name = "Utente"
         verbose_name_plural = "Utenti"
+
+    def getNomeCompleto(self):
+        return self.nome + " " + self.cognome
