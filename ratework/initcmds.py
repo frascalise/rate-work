@@ -23,3 +23,11 @@ def init_db():
     print("==============================")
     print("Database inizializzato con \nsuccesso!")
     print("==============================\n")
+
+def print_db():
+    print("==============================")
+    print("Stampo tutti gli utenti... ")
+    print("==============================\n")
+    for utente in Utente.objects.all():
+        print(utente.id, ": ", utente.getNomeCompleto())
+    print("\n==============================\n")
