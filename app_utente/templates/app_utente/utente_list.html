@@ -1,0 +1,16 @@
+<!-- utente_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettagli Utente</title>
+</head>
+<body>
+    <h1>Dettagli Utente</h1>
+    {% for utente in object_list %}
+    <p>Nome: {{ utente.nome }}</p>
+    <p>Cognome: {{ utente.cognome }}</p>
+    <hr>
+    {% endfor %}
+</body>
+</html>
