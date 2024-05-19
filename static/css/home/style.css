@@ -1,0 +1,11 @@
+.logo-navbar {
+    width: 45px;
+    height: 45px;
+    border-radius: 5px;
+}
+
+.workrate {
+    color: #212529;
+    font-weight: bold;
+    font-size: 30px;
+}

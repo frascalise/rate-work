@@ -1,0 +1,15 @@
+{% load static %}
+
+<h1>
+    {% if user.is_authenticated %}
+        Ciao {{user.username}}
+    {% else %}
+        Ciao guest
+    {% endif %}
+</h1>
+
+{% for i in lista %}
+    <p>{{i}}</p>
+{% endfor %}
+
+<img src="{% static 'imgs/cane.jpg' %}" alt="Foto cane">
