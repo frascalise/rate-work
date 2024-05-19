@@ -16,3 +16,14 @@ class Utente(models.Model):
 
     def getNomeCompleto(self):
         return self.nome + " " + self.cognome
+    
+class Utente2(models.Model):
+    nome = models.CharField(max_length=100)
+    cognome = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = "Utente2"
+        verbose_name_plural = "Utenti2"
+
+    def getNomeCompleto(self):
+        return self.nome + " " + self.cognome

@@ -8,8 +8,8 @@
     {% endif %}
 </h1>
 
-{% for i in lista %}
-    <p>{{i}}</p>
+{% for i in utenti %}
+    <p>{{i.getNomeCompleto}}</p>
 {% endfor %}
 
 <img src="{% static 'imgs/cane.jpg' %}" alt="Foto cane">

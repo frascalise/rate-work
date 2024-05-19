@@ -1,3 +1,8 @@
+body {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 .logo-navbar {
     width: 45px;
     height: 45px;
@@ -9,3 +14,14 @@
     font-weight: bold;
     font-size: 30px;
 }
+
+.workrate-orange{
+    background-color: #FF914D;
+    border: 2px solid #FF914D;
+}
+
+.workrate-orange:hover {
+    background-color: #D17A42;
+    border: 2px solid #D17A42;
+}
+
