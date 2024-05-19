@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from .initcmds import erase_db, init_db
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -24,3 +25,6 @@ urlpatterns = [
     path('welcome/<str:name>/<int:age>/', views.welcome, name='welcome'),
     path('utente/', include('app_utente.urls'))  # Include URL dell'app "app_utente"
 ]
+
+erase_db()
+init_db()

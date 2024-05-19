@@ -5,6 +5,6 @@ from . import views
 app_name = 'app_utente'
 
 urlpatterns = [
-    path('<int:pk>/', views.UtenteDetail.as_view(), name='utente_detail'),  # es. http://127.0.0.1:8000/utente/2/
-    path('', views.UtenteList.as_view(), name='utente_list')
+    path('', views.UtenteList.as_view(), name='utente_list'),
+    path('<int:pk>/', views.UtenteDetail.as_view(), name='utente_detail')  # es. http://127.0.0.1:8000/utente/2/
 ]
