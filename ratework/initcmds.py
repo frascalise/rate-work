@@ -13,11 +13,11 @@ def init_db():
         return
 
     utentiDict = {
-        "nome": ["Mario", "Luigi", "Peach", "Toad", "Yoshi"],
-        "cognome": ["Rossi", "Verdi", "Bianchi", "Gialli", "Neri"]
+        "nome": ["Mario", "Luigi", "Peach", "Toad", "Yoshi", "Bowser", "Wario", "Waluigi", "Daisy", "Rosalina", "Donkey Kong", "Diddy Kong", "Koopa Troopa", "Shy Guy", "Birdo", "Toadette"],
+        "cognome": ["Rossi", "Verdi", "Bianchi", "Gialli", "Neri", "Arancioni", "Viola", "Azzurri", "Rosa", "Celesti", "Marroni", "Grigi", "Verdi", "Bianchi", "Neri", "Arancioni"]
     }
 
-    for i in range(5):
+    for i in range(len(utentiDict["nome"])):
         Utente.objects.create(nome=utentiDict["nome"][i], cognome=utentiDict["cognome"][i])
     
     print("==============================")
