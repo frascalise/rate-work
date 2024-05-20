@@ -4,6 +4,10 @@ body {
     color: #212529;
 }
 
+p {
+    color: red;
+}
+
 .logo-navbar {
     width: 45px;
     height: 45px;
@@ -18,6 +22,7 @@ body {
 .workrate-orange{
     background-color: #FF914D;
     border: 2px solid #FF914D;
+    margin-left: 10px;
 }
 
 .workrate-orange:hover {
