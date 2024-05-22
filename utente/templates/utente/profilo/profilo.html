@@ -2,13 +2,22 @@
 
 {% block head %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/registrazione/style.css'%}">
+    {% if utente.is_azienda %}
+        <link rel="stylesheet" href="{% static 'css/profilo/styleAzienda.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'css/profilo/styleLavoratore.css' %}">
+    {% endif %}
 {% endblock head %}
 
-{% block title %} Login {% endblock title %}
+{% block title %} Profilo Lavoratore {% endblock title %}
 
 {% block content %}
+
     {% include "main_components/navbar.html" %}
-    {% include "utente/profilo/bodyProfilo.html" %}
+    {% if utente.is_azienda %}
+        {% include "utente/profilo/bodyProfilo_Azienda.html" %}
+    {% else %}
+        {% include "utente/profilo/bodyProfilo_Lavoratore.html" %}
+    {% endif %}
     {% include "main_components/footer.html" %}
 {% endblock content %}

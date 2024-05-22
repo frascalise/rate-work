@@ -2,23 +2,29 @@
 
 # Modello DB
 - [x] Fare modello ER
-- [] App per utente (lavoratore + azienda)
+- [x] App per utente (lavoratore + azienda)
 - [] App per recensioni (?)
 
 # Home Page
-- [] Pulsanti per Login - Registrazione - Logout
+- [x] Pulsanti per Login - Registrazione - Logout
+- [] Ricerca di un utente (lavoratore o azienda) e visualizzarne il profilo (username, nome, recensioni)
 
 # Profilo lavoratore
+- [x] Visualizzare i propri dati, username, nome ecc...
 - [] Visualizzare le proprie recensioni
 - [] Visualizzare dove lavori (o inviare richiesta di lavoro se non lavori)
 - [] Modificare il profilo
 - [] Valutare l'azienda dove lavori
+- [] Visualizzare annunci di lavoro personalizzati
 
 # Profilo azienda
+- [x] Visualizzare i propri dati, username, nome ecc...
 - [] Visualizzare le proprie recensioni
 - [] Visualizzare quali lavoratori sono assunti
 - [] Modificare il profilo
 - [] Valutare i lavoratori assunti
+- [x] Creare annunci di lavoro
+
 
 
 ## COMANDI UTILI ##

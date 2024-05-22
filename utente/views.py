@@ -1,11 +1,32 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import user_passes_test
-from .forms import LoginForm, RegistrationForm
+from django.contrib.auth.decorators import login_required
+from .forms import LoginForm, RegistrationForm, AnnuncioLavoroForm
+from .models import Utente, AnnuncioLavoro
 
 # Utilizzo questa funzione per evitare che da loggati si possa accedere alla registrazione e al login
 #def not_authenticated(user):
 #    return not user.is_authenticated
+
+@login_required(login_url='login')
+def Profilo(request):
+    utente = request.user
+    if utente.is_azienda:
+        annunci = AnnuncioLavoro.objects.filter(azienda=utente)
+        if request.method == 'POST':
+            form = AnnuncioLavoroForm(request.POST)
+            if form.is_valid():
+                annuncio = form.save(commit=False)
+                annuncio.azienda = request.user
+                annuncio.save()
+                return redirect('profilo')  # Definisci questa vista e rotta
+        else:
+            form = AnnuncioLavoroForm()
+        return render(request, 'utente/profilo/profilo.html', {'utente': utente, 'form': form, 'annunci': annunci})
+    else:
+        return render(request, 'utente/profilo/profilo.html', context={'utente': utente})
+    
+
 
 #@user_passes_test(not_authenticated, login_url='home')
 def Registrazione(request):
@@ -53,4 +74,5 @@ def Logout(request):
     logout(request)
     return redirect('home')
 
- 
+def CreaAnnuncio(request):
+    return "ciao"

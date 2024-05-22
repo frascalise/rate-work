@@ -1,0 +1,56 @@
+body {
+    color: #212529;
+    margin: auto;
+}
+
+.logo-navbar {
+    width: 45px;
+    height: 45px;
+    border-radius: 5px;
+}
+
+.workrate {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.workrate-orange{
+    background-color: #FF914D;
+    border: 2px solid #FF914D;
+    margin-right: 10px;
+}
+
+.workrate-orange:hover {
+    background-color: #D17A42;
+    border: 2px solid #D17A42;
+}
+
+.logout-btn {
+    background-color: inherit;
+    border: 0px;
+    margin-right: 15px;
+    color: #D17A42;
+    font-weight: bold;
+}
+
+.logout-form{
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+.circle {
+    border-radius: 50%;
+}
+
+.body-div{
+    min-height: 700px;
+}
+
+.box-scelta{
+    border: 1px solid #FF914D;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    height: 500px;
+}

@@ -2,17 +2,21 @@
 
 <!-- Image and text -->
 <nav class="navbar">
+    
     <a class="navbar-brand" href="{% url 'home' %}">
         <img src="{% static 'imgs/home/logo.png' %}" class="d-inline-block align-top logo-navbar" alt="">
         <span class="workrate">WorkRate</span>
     </a>
+
     <div class="my-2 my-lg-0 d-flex">
         {% if user.is_authenticated %}
         <form class="logout-form" action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button class="logout-btn" type="submit">Logout</button>
         </form>
-        <img class='circle' src='https://placehold.co/40'> <!-- Placeholder for user profile image -->
+        <a href="{% url 'profilo' %}">
+            <img class='circle' src='https://placehold.co/40'> <!-- Placeholder for user profile image -->
+        </a>
         {% else %}
         <form class="logout-form" action="{% url 'login' %}" method="post"> <!-- action url 'login' -->
             {% csrf_token %}

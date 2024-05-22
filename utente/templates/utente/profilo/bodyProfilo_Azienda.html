@@ -1,0 +1,55 @@
+<div class='container'>
+    <h1>Profilo Aziendale di {{ utente.nome }}</h1>
+    <p><b>@{{ utente.username }}</b> | Situato a: {{ utente.citta }} <!-- citta' --></p> 
+
+    <hr>
+
+    <h3>Crea un annuncio:</h3>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="titolo">Titolo</label>
+                {{ form.titolo }}
+            </div>
+            <div class="form-group col-md-4">
+                <label for="rangeStipendio">Range Stipendio</label>
+                {{ form.range_stipendio }}
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control control--checkbox mb-0"><span class="caption">Lavoro a distanza?</span>
+                    {{ form.is_distanza }}
+                </label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="rangeStipendio">Descrizione</label>
+                {{ form.descrizione }}
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Crea Annuncio</button>
+    </form>
+    
+    <hr>
+
+    <h3>I tuoi annunci:</h3>
+    {% for i in annunci %}
+        <div class="annuncio">
+            <h4>{{ i.titolo }}</h4>
+            <p>{{ i.descrizione }}</p>
+            <p>Stipendio: {{ i.range_stipendio }}$</p>
+            {% if i.is_distanza %} 
+                <p>Lavoro a distanza</p>
+            {% else %}
+                <p>Lavoro in sede</p>
+            {% endif %}
+            <p>Annuncio creato il: {{ i.data_pubblicazione|date:"d/m/Y" }}</p>
+        </div>
+        {% empty %}
+        <p>Non hai ancora creato nessun annuncio</p>
+    {% endfor %}
+
+</div>
