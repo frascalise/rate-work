@@ -1,0 +1,14 @@
+{% extends "main_page.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/registrazione/style.css'%}">
+{% endblock head %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+    {% include "main_components/navbar.html" %}
+    {% include "utente/profilo/bodyProfilo.html" %}
+    {% include "main_components/footer.html" %}
+{% endblock content %}
