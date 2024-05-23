@@ -24,19 +24,3 @@ body {
     background-color: #D17A42;
     border: 2px solid #D17A42;
 }
-
-.circle {
-    border-radius: 50%;
-}
-
-.body-div{
-    min-height: 700px;
-}
-
-.box-scelta{
-    border: 1px solid #FF914D;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-    height: 500px;
-}

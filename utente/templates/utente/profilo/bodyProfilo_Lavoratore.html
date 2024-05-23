@@ -1,8 +1,21 @@
 <div class='container'>
     <h1>Profilo di {{ utente.nome }}</h1>
-    <p><b>@{{ utente.username }}</b> | <i>Lavoratore presso Reggio Poste<!-- presso lavoro --></i> | Situato a: {{ utente.citta }} <!-- citta' --></p> 
+    <p><b>@{{ utente.username }}</b> | <i>Lavoratore presso Reggio Poste<!-- presso lavoro --></i> | Situato a: {{ utente.citta }} | <!-- citta' -->
+        competenze: {{ utente.tag }}
+    </p> 
 
     <hr>
 
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-12 flex-d">
+                <label for="titolo">I tuoi tag</label>
+                {{ form.tag }}
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Salva i tag</button>
+    </form>
 
 </div>

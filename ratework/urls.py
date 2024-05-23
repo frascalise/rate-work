@@ -17,9 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import home
+from .inserimentoDb import initDb, inserimentoUtenti, inserimentoAnnunci
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('utente/', include('utente.urls'))
 ]
+
+#'''Popolamento del database
+initDb()
+inserimentoUtenti()
+inserimentoAnnunci()
+#''' 

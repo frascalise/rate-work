@@ -9,6 +9,10 @@
 
 {% block content %}
     {% include "main_components/navbar.html" %}
+    {% if user.is_authenticated %}
+    {% include "home/homeAutenticata.html" %}
+    {% else %}
     {% include "main_components/body.html" %}
+    {% endif %}
     {% include "main_components/footer.html" %}
 {% endblock content %}

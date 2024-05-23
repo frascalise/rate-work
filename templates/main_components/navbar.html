@@ -10,19 +10,19 @@
 
     <div class="my-2 my-lg-0 d-flex">
         {% if user.is_authenticated %}
-        <form class="logout-form" action="{% url 'logout' %}" method="post">
+        <form class="logout-form" action="{% url 'logout' %}" method="get">
             {% csrf_token %}
             <button class="logout-btn" type="submit">Logout</button>
         </form>
         <a href="{% url 'profilo' %}">
-            <img class='circle' src='https://placehold.co/40'> <!-- Placeholder for user profile image -->
+            <img class='rounded-circle' src='https://placehold.co/40'> <!-- Placeholder for user profile image -->
         </a>
         {% else %}
-        <form class="logout-form" action="{% url 'login' %}" method="post"> <!-- action url 'login' -->
+        <form class="logout-form" action="{% url 'login' %}" method="get"> <!-- action url 'login' -->
             {% csrf_token %}
             <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Login</button>
         </form>
-        <form class="logout-form" action="{% url 'registrazione' %}" method="post"> <!--  url 'register' -->
+        <form class="logout-form" action="{% url 'registrazione' %}" method="get"> <!--  url 'register' -->
             {% csrf_token %}
             <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Sign in</button>
         </form>

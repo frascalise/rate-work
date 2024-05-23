@@ -53,10 +53,15 @@ body {
     align-items: center; /* Centra verticalmente */
 }
 
-.circle {
-    border-radius: 50%;
+.titolo-profilo{
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
 }
 
 .body-div{
     min-height: 700px;
+}
+
+.hidden{
+    display: none;
 }

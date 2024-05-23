@@ -6,6 +6,7 @@ class Utente(AbstractUser):
     nome = models.CharField('nome', max_length=100)
     citta = models.CharField('citta', max_length=100)
     is_azienda = models.BooleanField('is_azienda', default=False)
+    tag = models.CharField('tag', max_length=100, default=None, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Utente'
@@ -18,6 +19,7 @@ class AnnuncioLavoro(models.Model):
     descrizione = models.TextField('descrizione')
     data_pubblicazione = models.DateTimeField('data di pubblicazione', auto_now_add=True)
     is_distanza = models.BooleanField('id_distanza', default=False)
+    tag = models.CharField('tag', max_length=200, default=None, null=True)
 
     RANGE_STIPENDIO_CHOICES = [("1000-1200", "1000-1200"),("1200-1500", "1200-1500"),("1500-2000", "1500-2000"),("2000-2500", "2000-2500"),("2500+", "2500+")]
     range_stipendio = models.CharField('range_stipendio', max_length=50, choices=RANGE_STIPENDIO_CHOICES)
@@ -25,4 +27,3 @@ class AnnuncioLavoro(models.Model):
     class Meta:
         verbose_name = 'Annuncio di Lavoro'
         verbose_name_plural = 'Annunci di Lavoro'
-

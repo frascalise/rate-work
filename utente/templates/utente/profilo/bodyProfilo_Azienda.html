@@ -1,6 +1,12 @@
 <div class='container'>
-    <h1>Profilo Aziendale di {{ utente.nome }}</h1>
-    <p><b>@{{ utente.username }}</b> | Situato a: {{ utente.citta }} <!-- citta' --></p> 
+    <div class="my-2 my-lg-0 d-flex">
+        <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 200px; height: 200px;" class='rounded-circle'>
+        <div class='titolo-profilo'>
+            <h1>Profilo Aziendale di {{ utente.nome }}</h1>
+            <p><b>@{{ utente.username }}</b> | Situato a: {{ utente.citta }} <!-- citta' --></p> 
+        </div>
+    </div>
+    
 
     <hr>
 
@@ -16,6 +22,10 @@
             <div class="form-group col-md-4">
                 <label for="rangeStipendio">Range Stipendio</label>
                 {{ form.range_stipendio }}
+            </div>
+            <div class="form-group col-md-4">
+                <label for="rangeStipendio">Tag</label>
+                {{ form.tag }}
             </div>
             <div class="form-group col-md-4">
                 <label class="control control--checkbox mb-0"><span class="caption">Lavoro a distanza?</span>
@@ -36,20 +46,28 @@
     <hr>
 
     <h3>I tuoi annunci:</h3>
+    <div class="card-deck">
     {% for i in annunci %}
-        <div class="annuncio">
-            <h4>{{ i.titolo }}</h4>
-            <p>{{ i.descrizione }}</p>
-            <p>Stipendio: {{ i.range_stipendio }}$</p>
-            {% if i.is_distanza %} 
-                <p>Lavoro a distanza</p>
-            {% else %}
-                <p>Lavoro in sede</p>
-            {% endif %}
-            <p>Annuncio creato il: {{ i.data_pubblicazione|date:"d/m/Y" }}</p>
+        <div class="card" style='width:500px'>
+            <div class="card-body" >
+                <h5 class="card-title">{{ i.titolo }}</h5>
+                <p class="card-text">{{ i.descrizione }}</p>
+                <div class="card-footer">
+                    <small class="text-muted">
+                        Stipendio: {{ i.range_stipendio }} - 
+                        {% if i.is_distanza %} 
+                            Lavoro a distanza
+                        {% else %}
+                            Lavoro in sede
+                        {% endif %}
+                        - {{ i.data_pubblicazione|date:"d/m/Y" }}
+                    </small>
+                </div>
+            </div>
         </div>
         {% empty %}
         <p>Non hai ancora creato nessun annuncio</p>
     {% endfor %}
+    </div>
 
 </div>

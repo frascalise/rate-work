@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, RegistrationForm, AnnuncioLavoroForm
+from .forms import LoginForm, RegistrationForm, AnnuncioLavoroForm, TagLavoratoreForm
 from .models import Utente, AnnuncioLavoro
 
 # Utilizzo questa funzione per evitare che da loggati si possa accedere alla registrazione e al login
@@ -24,9 +25,15 @@ def Profilo(request):
             form = AnnuncioLavoroForm()
         return render(request, 'utente/profilo/profilo.html', {'utente': utente, 'form': form, 'annunci': annunci})
     else:
-        return render(request, 'utente/profilo/profilo.html', context={'utente': utente})
+        if request.method == 'POST':
+            form = form = TagLavoratoreForm(request.POST, instance=utente)
+            if form.is_valid():
+                form.save()
+                return redirect('profilo')
+        else:
+                form = TagLavoratoreForm(instance=utente)
+        return render(request, 'utente/profilo/profilo.html', context={'utente': utente, 'form': form})
     
-
 
 #@user_passes_test(not_authenticated, login_url='home')
 def Registrazione(request):
@@ -41,11 +48,16 @@ def Registrazione(request):
             message = 'Utente registrato con successo'
             return redirect('login')
         else:
-            message = 'Errore nella registrazione'
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, f"{field.label}: {error}")
+            for error in form.non_field_errors():
+                messages.error(request, error)
     else:
         form = RegistrationForm()
 
-    return render(request, 'utente/registrazione/registrazione.html', {'form': form, 'message': message})
+    return render(request, 'utente/registrazione/registrazione.html', {'form': form})
+
 
 #@user_passes_test(not_authenticated, login_url='home')
 def Login(request):
@@ -70,9 +82,8 @@ def Login(request):
             message = 'Errore nel login'
     return render(request, 'utente/login/login.html', {'form': form, 'message': message})
 
+
 def Logout(request):
     logout(request)
     return redirect('home')
 
-def CreaAnnuncio(request):
-    return "ciao"

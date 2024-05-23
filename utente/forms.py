@@ -63,7 +63,6 @@ class RegistrationForm(UserCreationForm):
         fields = ('username', 'email', 'nome', 'password1', 'password2', 'citta', 'is_azienda')
 
 class AnnuncioLavoroForm(forms.ModelForm):
-
     titolo = forms.CharField(
         label='Titolo', 
         max_length=200,
@@ -88,6 +87,23 @@ class AnnuncioLavoroForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
+    tag = forms.CharField(
+        label='tag', 
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
     class Meta:
         model = AnnuncioLavoro
-        fields = ['titolo', 'descrizione', 'is_distanza', 'range_stipendio']
+        fields = ['titolo', 'descrizione', 'is_distanza', 'range_stipendio', 'tag']
+
+class TagLavoratoreForm(forms.ModelForm):
+    tag = forms.CharField(
+        label='tag', 
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Utente
+        fields = ['tag']

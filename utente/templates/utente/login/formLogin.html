@@ -1,5 +1,13 @@
 <div class="container form-container">
     <h2>Accedi al tuo account WorkRate!</h2>
+
+    <!-- Se c'è un messaggio di errore, lo mostro -->
+    {% if message %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+    {% endif %}
+    
     <form  method="post">
         {% csrf_token %}
         <div class="form-group first">
@@ -10,6 +18,6 @@
             <label for="username">Password</label>
             {{ form.password }}
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" class="btn btn-primary my-2 my-sm-0 workrate-orange">Accedi</button>
     </form>
 </div>

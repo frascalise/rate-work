@@ -39,10 +39,6 @@ body {
     align-items: center; /* Centra verticalmente */
 }
 
-.circle {
-    border-radius: 50%;
-}
-
 .body-div{
     min-height: 700px;
 }

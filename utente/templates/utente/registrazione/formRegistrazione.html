@@ -1,5 +1,14 @@
 <div class="container form-container">
     <h2>Registrati in WorkRate!</h2>
+
+    {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                {{ message }} <br>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <form method="post">
         {% csrf_token %}
         <div class="form-group first">
