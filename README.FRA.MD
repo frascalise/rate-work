@@ -7,13 +7,13 @@
 
 # Home Page
 - [x] Pulsanti per Login - Registrazione - Logout
-- [] Ricerca di un utente (lavoratore o azienda) e visualizzarne il profilo (username, nome, recensioni)
+- [x] Ricerca di un utente (lavoratore o azienda) e visualizzarne il profilo (username, nome, recensioni)
 
 # Profilo lavoratore
 - [x] Visualizzare i propri dati, username, nome ecc...
 - [x] Impostare i tag per gli annunci personalizzati
-- [] Visualizzare annunci di lavoro personalizzati
 - [] Visualizzare dove lavori (o inviare richiesta di lavoro se non lavori)
+- [] Visualizzare annunci di lavoro personalizzati
 - [] Visualizzare le proprie recensioni
 - [] Valutare l'azienda dove lavori
 - [] Modificare il profilo (COME ULTIMA COSA)
@@ -21,9 +21,9 @@
 # Profilo azienda
 - [x] Visualizzare i propri dati, username, nome ecc...
 - [x] Creare annunci di lavoro
-- [] Visualizzare le proprie recensioni
 - [] Visualizzare quali lavoratori sono assunti
 - [] Valutare i lavoratori assunti
+- [] Visualizzare le proprie recensioni
 - [] Modificare il profilo (COME ULTIMA COSA)
 
 

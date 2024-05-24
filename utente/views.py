@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -87,3 +87,14 @@ def Logout(request):
     logout(request)
     return redirect('home')
 
+
+def ProfiloCercato(request, username):
+    utenti = Utente.objects.filter(username=username)
+    if utenti.exists():
+        utente = utenti.first()
+        Error404Msg = None
+    else:
+        utente = None
+        Error404Msg = 'Error: 404 - Utente non trovato'
+    
+    return render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 'message': Error404Msg})

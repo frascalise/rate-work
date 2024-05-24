@@ -4,7 +4,7 @@
         <input type="text" id="search-input" class="form-control" placeholder="Cerca utenti per username...">
         <ul id="results-list" class="list-group mt-2">
             {% for utente in utenti %}
-                <li class="list-group-item user-item hidden">{{ utente.username }}</li>
+                <a href="{% url 'profilo_cercato' utente.username %}"><li class="list-group-item user-item hidden">{{ utente.username }}</li></a>
             {% endfor %}
         </ul>
     </div>
