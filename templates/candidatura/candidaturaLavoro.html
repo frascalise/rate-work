@@ -1,0 +1,28 @@
+<div class='container'>
+    
+    {% if message %}
+    <div class="alert alert-danger">
+        <h1>{{ message }}</h1>
+    </div>
+    {% else %}
+
+        <h1>Candidatura per il lavoro di: {{ annuncio.titolo }}</h1>
+        <p> Azienda: <b>{{ annuncio.azienda }}</b> | {{ annuncio.data_pubblicazione | date:"d/m/Y"}}</p>
+        <p>{{ annuncio.descrizione }}</p>
+
+        <p>Stipendio medio: {{ annuncio.range_stipendio }}€</p>
+        <p>Conoscenze richieste: {{ annuncio.tag }}</p>
+        {% if annuncio.id_distanza %}
+            <p>Lavoro da remoto</p>
+        {% else %}
+            <p>Luogo: {{ azienda.citta }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Candidati</button>
+        </form>
+    {% endif %}
+    
+</div>

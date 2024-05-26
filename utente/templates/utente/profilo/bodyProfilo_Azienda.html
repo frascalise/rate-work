@@ -1,12 +1,15 @@
 <div class='container'>
     <div class="my-2 my-lg-0 d-flex">
-        <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 200px; height: 200px;" class='rounded-circle'>
+        <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
         <div class='titolo-profilo'>
             <h1>Profilo Aziendale di {{ utente.nome }}</h1>
-            <p><b>@{{ utente.username }}</b> | Situato a: {{ utente.citta }} <!-- citta' --></p> 
+            <p><b>@{{ utente.username }}</b> | Dipendenti: {{ lavoriAccettati.count }} | Situato a: {{ utente.citta }} <!-- citta' --></p>
+            <br>
+            <p> Hai {{ richiesteLavoro.count }} richieste di lavoro in sospeso
+                <a href="{% url 'richieste' %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange">Visualizza</button></a>
+            </p>
         </div>
     </div>
-    
 
     <hr>
 
@@ -69,5 +72,25 @@
         <p>Non hai ancora creato nessun annuncio</p>
     {% endfor %}
     </div>
+
+    <hr>
+
+    <h3> Dipendenti:</h3>
+    {% for i in lavoriAccettati %}
+        <p>
+            <b> {{ i.annuncio.titolo }} </b> | {{ i.lavoratore }} 
+            <a  href=""><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='margin-left:100px'>Recensione</button></a>
+        </p>
+        <hr><br>
+    {% endfor %}
+    {% if messages %}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        });
+    </script>
+{% endif %}
 
 </div>

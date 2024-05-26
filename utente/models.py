@@ -24,6 +24,18 @@ class AnnuncioLavoro(models.Model):
     RANGE_STIPENDIO_CHOICES = [("1000-1200", "1000-1200"),("1200-1500", "1200-1500"),("1500-2000", "1500-2000"),("2000-2500", "2000-2500"),("2500+", "2500+")]
     range_stipendio = models.CharField('range_stipendio', max_length=50, choices=RANGE_STIPENDIO_CHOICES)
 
+    is_available = models.BooleanField('is_available', default=True)
+
     class Meta:
         verbose_name = 'Annuncio di Lavoro'
         verbose_name_plural = 'Annunci di Lavoro'
+
+# Modello per il lavoro
+class Lavoro(models.Model):
+    annuncio = models.ForeignKey(AnnuncioLavoro, on_delete=models.CASCADE, related_name='lavori')
+    lavoratore = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='lavori')
+    stato = models.CharField('stato', max_length=200, choices=[('In attesa', 'In attesa'), ('Accettato', 'Accettato'), ('Rifiutato', 'Rifiutato')], default='In attesa')
+
+    class Meta:
+        verbose_name = 'Lavoro'
+        verbose_name_plural = 'Lavori'

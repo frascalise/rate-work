@@ -1,3 +1,5 @@
+<h1>Benvenuto {{ user.username }}</h1>
+
 <h2>Cerca un profilo</h2>
 
     <div class="search-bar">
@@ -28,6 +30,7 @@
                             {% endif %}
                             <br> Tag: {{ i.tag }}
                             <br> da: <b>{{i.azienda}}</b> il {{ i.data_pubblicazione|date:"d/m/Y" }}
+                            {% if not utente.is_azienda and not hasAwork %}<a  href="{% url 'candidatura' i.id%}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='float:right'>Candidati</button></a>{% endif %}
                         </small>
                     </div>
                 </div>
@@ -58,3 +61,13 @@
             });
         });
     </script>
+
+{% if messages %}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        });
+    </script>
+{% endif %}

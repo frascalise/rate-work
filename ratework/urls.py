@@ -16,17 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import home
+from .views import home, Candidatura
 from .inserimentoDb import initDb, inserimentoUtenti, inserimentoAnnunci
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('utente/', include('utente.urls'))
+    path('utente/', include('utente.urls')),
+    path('candidatura/<int:id>/', Candidatura, name='candidatura'),
 ]
 
-#'''Popolamento del database
+'''Popolamento del database
 initDb()
 inserimentoUtenti()
 inserimentoAnnunci()
-#''' 
+''' 

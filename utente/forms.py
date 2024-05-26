@@ -107,3 +107,7 @@ class TagLavoratoreForm(forms.ModelForm):
     class Meta:
         model = Utente
         fields = ['tag']
+
+class RichiestaForm(forms.Form):
+    SCELTE = [('Accetta', 'Accetta'),('Rifiuta', 'Rifiuta')]
+    scelta = forms.ChoiceField(choices=SCELTE, widget=forms.RadioSelect)

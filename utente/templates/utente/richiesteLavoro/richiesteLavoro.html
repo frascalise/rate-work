@@ -1,0 +1,32 @@
+<div class='container'>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+    {% if not richiesteLavoro %}
+    <div class="alert alert-danger">
+        <h1>Non hai richieste di lavoro al momento</h1>
+    </div>
+    {% else %}
+        {% for i in richiesteLavoro %}
+                <p><b> {{ i.annuncio.titolo }} </b></p>
+                <p> {{ i.annuncio.descrizione }} </p>
+                <p>Stipendio: {{ i.annuncio.range_stipendio }} </p>
+                <p>tag: {{ i.annuncio.tag }} </p>
+                <p> Per questa posizione si e' candidato: <a href="{% url 'profilo_cercato' i.lavoratore %}"><b> {{ i.lavoratore }} </b></a> </p>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="lavoro_id" value="{{ i.id }}">
+                    <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Conferma</button>
+                </form>
+                <hr>
+        {% endfor %}
+    {% endif %}
+</div>
