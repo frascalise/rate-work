@@ -21,17 +21,17 @@
 - [x] Visualizzare i propri dati, username, nome ecc...
 - [x] Impostare i tag per gli annunci personalizzati
 - [x] Visualizzare dove lavori (o inviare richiesta di lavoro se non lavori)
+- [x] Visualizzare le proprie recensioni
+- [x] Valutare l'azienda dove lavori
 - [] Visualizzare annunci di lavoro personalizzati
-- [] Visualizzare le proprie recensioni
-- [] Valutare l'azienda dove lavori
 - [] Modificare il profilo (COME ULTIMA COSA)
 
 # Profilo azienda
 - [x] Visualizzare i propri dati, username, nome ecc...
 - [x] Creare annunci di lavoro
 - [x] Visualizzare quali lavoratori sono assunti
-- [] Valutare i lavoratori assunti
-- [] Visualizzare le proprie recensioni
+- [x] Valutare i lavoratori assunti
+- [x] Visualizzare le proprie recensioni
 - [] Modificare il profilo (COME ULTIMA COSA)
 
 

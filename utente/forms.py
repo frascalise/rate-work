@@ -113,11 +113,12 @@ class RichiestaForm(forms.Form):
     scelta = forms.ChoiceField(choices=SCELTE, widget=forms.RadioSelect)
 
 class RecensioneForm(forms.ModelForm):
+    valutazione = forms.ChoiceField(choices=[(1, 'Positivo'), (0, 'Neutro'), (-1, 'Negativo')], widget=forms.RadioSelect)
+    
     class Meta:
         model = Recensione
         fields = ['valutazione', 'titolo', 'commento']
         widgets = {
-            'valutazione': forms.RadioSelect(choices=[(1, '★'), (2, '★★'), (3, '★★★'), (4, '★★★★'), (5, '★★★★★')]),
             'titolo': forms.TextInput(attrs={'max_length': 200}),
             'commento': forms.Textarea(attrs={'max_length': 1000}),
         }

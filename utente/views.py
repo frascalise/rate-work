@@ -12,6 +12,8 @@ from .models import Utente, AnnuncioLavoro, Lavoro, Recensione
 @login_required(login_url='login')
 def Profilo(request):
     utente = request.user
+    recensioni = Recensione.objects.filter(destinatario=utente)
+
     if utente.is_azienda:
         richiesteLavoro = Lavoro.objects.filter(annuncio__azienda=utente, stato='In attesa')
         lavoriAccettati = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato')
@@ -25,7 +27,7 @@ def Profilo(request):
                 return redirect('profilo')
         else:
             form = AnnuncioLavoroForm()
-        return render(request, 'utente/profilo/profilo.html', {'utente': utente, 'form': form, 'annunci': annunci, 'richiesteLavoro': richiesteLavoro, 'lavoriAccettati': lavoriAccettati})
+        return render(request, 'utente/profilo/profilo.html', {'utente': utente, 'form': form, 'annunci': annunci, 'richiesteLavoro': richiesteLavoro, 'lavoriAccettati': lavoriAccettati, 'recensioni': recensioni})
     
     else:
         lavoroUtente = Lavoro.objects.filter(lavoratore=request.user, stato='Accettato').first()
@@ -37,7 +39,7 @@ def Profilo(request):
                 return redirect('profilo')
         else:
                 form = TagLavoratoreForm(instance=utente)
-        return render(request, 'utente/profilo/profilo.html', context={'utente': utente, 'form': form, 'lavoroUtente': lavoroUtente})
+        return render(request, 'utente/profilo/profilo.html', context={'utente': utente, 'form': form, 'lavoroUtente': lavoroUtente, 'recensioni': recensioni})
     
 
 #@user_passes_test(not_authenticated, login_url='home')
@@ -139,11 +141,43 @@ def Richieste(request):
 
 
 def RecensioneUtente(request, username):
+
+    autoreRecensione = request.user
+
+    if Utente.objects.filter(username=username).exists():
+        utenteRecensito = Utente.objects.get(username=username)
+    else:
+        utenteRecensito = None
+
+    if utenteRecensito is None:
+        message = 'ERRORE - UTENTE NON TROVATO'
+        return render(request, 'utente/recensioneUtente/recensione.html', {'message': message})
+    elif autoreRecensione.is_azienda == utenteRecensito.is_azienda:
+        message = 'ERRORE - NON PUOI RECENSIRE UN UTENTE SIMILE A TE'
+        return render(request, 'utente/recensioneUtente/recensione.html', {'message': message})
+    elif utenteRecensito == autoreRecensione:
+        message = 'ERRORE - NON PUOI RECENSIRE TE STESSO'
+        return render(request, 'utente/recensioneUtente/recensione.html', {'message': message})
+
     if request.method == 'POST':
         form = RecensioneForm(request.POST)
+
         if form.is_valid():
-            form.save()
-            return redirect('success')  # Redirect to a success page
+            recensione = form.save(commit = False)
+            recensione.mittente = autoreRecensione
+            recensione.destinatario = utenteRecensito
+            
+            if autoreRecensione.is_azienda:
+                lavoro = Lavoro.objects.filter(annuncio__azienda=autoreRecensione, lavoratore=utenteRecensito, stato='Accettato').first()
+            else:
+                lavoro = Lavoro.objects.filter(annuncio__azienda=utenteRecensito, lavoratore=autoreRecensione, stato='Accettato').first()
+
+            recensione.lavoro = lavoro
+            recensione.save()
+            return redirect('profilo')
+        else:
+            message = 'ERRORE - RECENSIONE NON VALIDA'
+            return render(request, 'utente/recensioneUtente/recensione.html', {'message': message, 'form': form, 'utenteRecensito': utenteRecensito, 'autoreRecensione': autoreRecensione})
     else:
         form = RecensioneForm()
-    return render(request, 'utente/recensioneUtente/recensione.html', {'form': form})
+    return render(request, 'utente/recensioneUtente/recensione.html', {'form': form, 'message': None, 'utenteRecensito': utenteRecensito, 'autoreRecensione': autoreRecensione})

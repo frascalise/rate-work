@@ -38,23 +38,3 @@ body {
     justify-content: center; /* Centra orizzontalmente */
     align-items: center; /* Centra verticalmente */
 }
-
-.star-rating {
-    direction: rtl;
-    display: inline-block;
-}
-.star-rating input[type="radio"] {
-    display: none;
-}
-.star-rating label {
-    font-size: 2em;
-    color: #ddd;
-    cursor: pointer;
-}
-.star-rating input[type="radio"]:checked ~ label {
-    color: #f5b301;
-}
-.star-rating label:hover,
-.star-rating label:hover ~ label {
-    color: #f5b301;
-}

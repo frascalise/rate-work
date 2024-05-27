@@ -76,6 +76,7 @@
     <hr>
 
     <h3> Dipendenti:</h3>
+    <div class='div-dipendenti'>
     {% for i in lavoriAccettati %}
         <p>
             <b> {{ i.annuncio.titolo }} </b> | @{{ i.lavoratore }} 
@@ -83,6 +84,20 @@
         </p>
         <hr><br>
     {% endfor %}
+    </div>
+
+    <hr>
+    <h3> Recensioni su di te:</h3>
+    <div class='div-recensioni'>
+    {% for i in recensioni %}
+        <p> recensione di {{ i.mittente }} - posizione di lavoro: {{ i.lavoro.annuncio.titolo }} - {{ i.get_valutazione_display_text }} </p>
+        <p> {{ i.titolo}} </p>
+        <p> {{ i.commento }} </p>
+        <p> {{ i.data_pubblicazione|date:"d/m/Y" }} </p>
+        <hr><br>
+    {% endfor %}
+    </div>
+
     {% if messages %}
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {

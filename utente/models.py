@@ -41,13 +41,28 @@ class Lavoro(models.Model):
         verbose_name_plural = 'Lavori'
 
 class Recensione(models.Model):
-    azienda = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensioni_azienda', limit_choices_to={'is_azienda': True})
-    lavoratore = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensioni_lavoratore', limit_choices_to={'is_azienda': False})
+    
+    mittente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensione_mittente', limit_choices_to={'is_azienda': True})
+    destinatario = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensione_destinatario', limit_choices_to={'is_azienda': False})
     lavoro = models.ForeignKey(Lavoro, on_delete=models.CASCADE, related_name='recensioni')
-    valutazione = models.IntegerField('valutazione', choices=[(1, '★'), (2, '★★'), (3, '★★★'), (4, '★★★★'), (5, '★★★★★')])
+    data_pubblicazione = models.DateTimeField('data di pubblicazione', auto_now_add=True)
+    
+    POSITIVO = 1
+    NEUTRO = 0
+    NEGATIVO = -1
+    VALUTAZIONE_CHOICES = [
+        (POSITIVO, 'Positivo'),
+        (NEUTRO, 'Neutro'),
+        (NEGATIVO, 'Negativo'),
+    ]
+    valutazione = models.IntegerField('valutazione', choices=VALUTAZIONE_CHOICES)
+    
     titolo = models.CharField('titolo', max_length=200)
     commento = models.TextField('commento')
 
     class Meta:
         verbose_name = 'Recensione'
         verbose_name_plural = 'Recensioni'
+    
+    def get_valutazione_display_text(self):
+        return dict(self.VALUTAZIONE_CHOICES)[int(self.valutazione)]

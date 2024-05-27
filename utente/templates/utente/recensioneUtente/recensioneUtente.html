@@ -1,26 +1,20 @@
 <div class='container'>
+    {% if message %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% else %}
+
+    <h2>Recensisci l'utente @{{ utenteRecensito }}</h2>
     <form method="post">
         {% csrf_token %}
-        <div class="star-rating">
-            {{ form.valutazione }}
-        </div>
+        {{ form.valutazione }}
         {{ form.titolo.label_tag }} {{ form.titolo }}
         {{ form.commento.label_tag }} {{ form.commento }}
-        <button type="submit">Submit</button>
+        <button type="submit">Invia</button>
     </form>
-        
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const stars = document.querySelectorAll('.star-rating input[type="radio"]');
     
-        stars.forEach(star => {
-            star.addEventListener('change', function () {
-                this.closest('.star-rating').querySelectorAll('label').forEach(label => {
-                    label.style.color = (label.previousElementSibling.checked || label.previousElementSibling === this) ? '#f5b301' : '#ddd';
-                });
-            });
-        });
-    });
-</script>
+    <br>
+    <p>Stai recensendo con il nome di @{{ autoreRecensione }}</p>
+    {% endif %}    
+</div>
