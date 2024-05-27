@@ -1,18 +1,17 @@
 ## STRUTTURA PROGETTO TECNOLOGIE WEB ##
 
 ## OBBLIGATORI##
-- [] Login e Registrazione
-- [] Controlli sui vari input
-- [] Utilizzo delle feature di Django
-- [] Messaggi di conferma/errore dopo le operazioni
+- [x] Login e Registrazione
+- [x] Controlli sui vari input
+- [x] Utilizzo delle feature di Django
+- [x] Messaggi di conferma/errore dopo le operazioni
 - [] Test
     - [] Testare registrazione con ogni tipo di input possibile
     - [] Testare una vista
 
 # Modello DB
 - [x] Fare modello ER
-- [x] App per utente (lavoratore + azienda)
-- [] App per recensioni (?)
+- [x] App per utente, lavoro, recensioni
 
 # Home Page
 - [x] Pulsanti per Login - Registrazione - Logout

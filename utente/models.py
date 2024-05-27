@@ -39,3 +39,15 @@ class Lavoro(models.Model):
     class Meta:
         verbose_name = 'Lavoro'
         verbose_name_plural = 'Lavori'
+
+class Recensione(models.Model):
+    azienda = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensioni_azienda', limit_choices_to={'is_azienda': True})
+    lavoratore = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensioni_lavoratore', limit_choices_to={'is_azienda': False})
+    lavoro = models.ForeignKey(Lavoro, on_delete=models.CASCADE, related_name='recensioni')
+    valutazione = models.IntegerField('valutazione', choices=[(1, '★'), (2, '★★'), (3, '★★★'), (4, '★★★★'), (5, '★★★★★')])
+    titolo = models.CharField('titolo', max_length=200)
+    commento = models.TextField('commento')
+
+    class Meta:
+        verbose_name = 'Recensione'
+        verbose_name_plural = 'Recensioni'

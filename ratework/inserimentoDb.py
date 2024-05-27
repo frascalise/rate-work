@@ -1,11 +1,11 @@
-from utente.models import Utente, AnnuncioLavoro, Lavoro
-from django.contrib.auth.models import User
+from utente.models import Utente, AnnuncioLavoro, Lavoro, Recensione
 
 
 def initDb():
     Utente.objects.all().delete()
     AnnuncioLavoro.objects.all().delete()
     Lavoro.objects.all().delete()
+    Recensione.objects.all().delete()
     print('========================================')
     print("Database inizializzato con successo.")
 

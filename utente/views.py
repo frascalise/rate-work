@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, RegistrationForm, AnnuncioLavoroForm, TagLavoratoreForm, RichiestaForm
-from .models import Utente, AnnuncioLavoro, Lavoro
+from .forms import LoginForm, RegistrationForm, AnnuncioLavoroForm, TagLavoratoreForm, RichiestaForm, RecensioneForm
+from .models import Utente, AnnuncioLavoro, Lavoro, Recensione
 
 # Utilizzo questa funzione per evitare che da loggati si possa accedere alla registrazione e al login
 #def not_authenticated(user):
@@ -136,3 +136,14 @@ def Richieste(request):
         form = RichiestaForm()
 
     return render(request, 'utente/richiesteLavoro/richieste.html', {'richiesteLavoro': richiesteLavoro, 'form': form, 'message': messages})
+
+
+def RecensioneUtente(request, username):
+    if request.method == 'POST':
+        form = RecensioneForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success')  # Redirect to a success page
+    else:
+        form = RecensioneForm()
+    return render(request, 'utente/recensioneUtente/recensione.html', {'form': form})

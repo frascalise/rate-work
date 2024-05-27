@@ -78,8 +78,8 @@
     <h3> Dipendenti:</h3>
     {% for i in lavoriAccettati %}
         <p>
-            <b> {{ i.annuncio.titolo }} </b> | {{ i.lavoratore }} 
-            <a  href=""><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='margin-left:100px'>Recensione</button></a>
+            <b> {{ i.annuncio.titolo }} </b> | @{{ i.lavoratore }} 
+            <a  href="{% url 'recensione' i.lavoratore %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='margin-left:100px'>Recensione</button></a>
         </p>
         <hr><br>
     {% endfor %}
