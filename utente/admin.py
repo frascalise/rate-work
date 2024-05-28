@@ -3,7 +3,7 @@ from .models import Utente, AnnuncioLavoro, Lavoro, Recensione
 
 # Mostra tutti i campi di utente
 class UtenteAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'nome', 'tag', 'is_azienda', 'password')
+    list_display = ('username', 'email', 'nome', 'tag', 'is_azienda', 'password', 'citta', 'immagine_profilo')
     
 class AnnuncioLavoroAdmin(admin.ModelAdmin):
     list_display = ('titolo', 'azienda', 'data_pubblicazione', 'is_distanza')

@@ -1,0 +1,21 @@
+<div class='container'>
+    <h2>Aggiorna Profilo</h2>
+    <form method='POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.nome.label_tag }}
+            {{ form.nome }}
+        </div>
+        <div class="form-group">
+            {{ form.citta.label_tag }}
+            {{ form.citta }}
+        </div>
+        <div class="form-group">
+            {{ form.immagine_profilo.label_tag }}
+            {{ form.immagine_profilo }}
+        </div>
+        <div class="form-group">
+            <button type="submit">Salva modifiche</button>
+        </div>
+    </form>
+</div>

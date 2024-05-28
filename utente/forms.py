@@ -62,6 +62,16 @@ class RegistrationForm(UserCreationForm):
         model = Utente
         fields = ('username', 'email', 'nome', 'password1', 'password2', 'citta', 'is_azienda')
 
+class ModificaProfiloForm(forms.ModelForm):
+    class Meta:
+        model = Utente
+        fields = ['nome', 'citta', 'immagine_profilo']
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'citta': forms.TextInput(attrs={'class': 'form-control'}),
+            'immagine_profilo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
 class AnnuncioLavoroForm(forms.ModelForm):
     titolo = forms.CharField(
         label='Titolo', 

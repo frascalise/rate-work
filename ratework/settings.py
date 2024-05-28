@@ -121,8 +121,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-AUTH_USER_MODEL = 'utente.Utente'
+MEDIA_URL = '/photo/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'photo')
 
+AUTH_USER_MODEL = 'utente.Utente'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

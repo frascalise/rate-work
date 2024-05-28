@@ -14,7 +14,11 @@
             <a href="{% url 'logout' %}"><button class="logout-btn" type="submit">Logout</button></a>
         </div>
         <a href="{% url 'profilo' %}">
-            <img class='rounded-circle' src='https://placehold.co/40'> <!-- Placeholder for user profile image -->
+            {% if user.immagine_profilo %}
+                <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 40px; height: 40px;" class='rounded-circle'>
+            {% else %}
+                <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 40px; height: 40px;" class='rounded-circle'>
+            {% endif %}
         </a>
         {% else %}
         <a href="{% url 'login' %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Login</button></a>

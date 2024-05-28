@@ -4,14 +4,49 @@
     <div class="alert alert-danger">
         <h1>{{ message }}</h1>
     </div>
-
     {% else %}
-    <h1>Profilo di {{ utente.nome }}</h1>
-    <p><b>@{{ utente.username }}</b> | <i>Lavoratore presso Reggio Poste<!-- presso lavoro --></i> | Situato a: {{ utente.citta }} | <!-- citta' -->
-        competenze: {% if utente.tag %} {{ utente.tag }} {% else %} nessuna competenza {% endif %}
-    </p> 
-    
-    <hr>
+
+    {% if utente.is_azienda %}
+        <div class="my-2 my-lg-0 d-flex">
+            {% if user.immagine_profilo %}
+                    <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+                {% else %}
+                    <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
+                {% endif %}
+            <div class='titolo-profilo'>
+                <h1>Profilo Aziendale di {{ utente.nome }}</h1>
+                <p>
+                    <b>@{{ utente.username }}</b> | Dipendenti: {{ lavoriAccettati.count }} | Situato a: {{ utente.citta }} <!-- citta' -->
+                </p>
+            </div>
+        </div>
+    {% else %}
+        <div class="my-2 my-lg-0 d-flex">
+            {% if user.immagine_profilo %}
+                    <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+                {% else %}
+                    <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
+                {% endif %}
+            <div class='titolo-profilo'>
+                <h1>Profilo di {{ utente.nome }}</h1>
+                <p><b>@{{ utente.username }}</b> | 
+                    {% if lavoroUtente %}
+                        <i>Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.annuncio.azienda %}">{{ lavoroUtente.annuncio.azienda }}</a></i> | 
+                    {% else %}
+                        <i>Disoccupato</i> | 
+                    {% endif %}
+                    Situato a: {{ utente.citta }} |
+                    competenze: 
+                    {% if utente.tag %}
+                        {{ utente.tag }} 
+                    {% else %}
+                        nessuna competenza
+                    {% endif %}
+                </p> 
+            </div>
+        </div>
+    {% endif %}
+
 
     {% endif %}
     

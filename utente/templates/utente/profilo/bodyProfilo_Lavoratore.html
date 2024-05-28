@@ -10,14 +10,18 @@
 
 <div class='container'>
     <div class="my-2 my-lg-0 d-flex">
-        <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
+        {% if user.immagine_profilo %}
+                <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+            {% else %}
+                <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
+            {% endif %}
         <div class='titolo-profilo'>
             <h1>Profilo di {{ utente.nome }}</h1>
             <p><b>@{{ utente.username }}</b> | 
                 {% if lavoroUtente %}
                     <i>Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.annuncio.azienda %}">{{ lavoroUtente.annuncio.azienda }}</a></i> | 
                 {% else %}
-                    <i>Disoccupato</i> |
+                    <i>Disoccupato</i> | 
                 {% endif %}
                 Situato a: {{ utente.citta }} | <!-- citta' -->
         
@@ -27,10 +31,10 @@
                 {% else %}
                     nessuna competenza
                 {% endif %}
+                | <a href="{% url 'modifica' %}">Modifica <i class="fa fa-edit"></i></a> 
             </p> 
         </div>
     </div>
-    <hr>
     {% if lavoroUtente %}
         <hr>
         <h3> Recensisci l'azienda dove lavori:</h3>
@@ -54,17 +58,19 @@
         <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Salva i tag</button>
     </form>
 
+    
+    {% if recensioni %}
     <hr>
-
     <h3> Recensioni su di te:</h3>
-    <div class='div-recensioni'>
-    {% for i in recensioni %}
-        <p> recensione di {{ i.mittente }} - posizione di lavoro: {{ i.lavoro.annuncio.titolo }} - {{ i.get_valutazione_display_text }} </p>
-        <p> {{ i.titolo}} </p>
-        <p> {{ i.commento }} </p>
-        <p> {{ i.data_pubblicazione|date:"d/m/Y" }} </p>
-        <hr><br>
-    {% endfor %}
+        <div class='div-recensioni'>
+        {% for i in recensioni %}
+            <p> recensione di {{ i.mittente }} - posizione di lavoro: {{ i.lavoro.annuncio.titolo }} - {{ i.get_valutazione_display_text }} </p>
+            <p> {{ i.titolo}} </p>
+            <p> {{ i.commento }} </p>
+            <p> {{ i.data_pubblicazione|date:"d/m/Y" }} </p>
+            <hr><br>
+        {% endfor %}
+    {% endif %}
     </div>
 
 

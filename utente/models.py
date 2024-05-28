@@ -1,5 +1,16 @@
+import os
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
+
+
+# Per evitare che le immagini abbiano lo stesso nome
+def upload_to(instance, filename):
+    username = instance.username
+    timestamp = timezone.now().strftime('%Y%m%d_%H%M%S')
+    filename_base, filename_ext = os.path.splitext(filename)
+    new_filename = f'fotoProfilo_{username}_{timestamp}{filename_ext}'
+    return os.path.join('profile_photos', new_filename)
 
 # Modello per l'utente
 class Utente(AbstractUser):
@@ -7,6 +18,7 @@ class Utente(AbstractUser):
     citta = models.CharField('citta', max_length=100)
     is_azienda = models.BooleanField('is_azienda', default=False)
     tag = models.CharField('tag', max_length=100, default=None, blank=True, null=True)
+    immagine_profilo = models.ImageField(upload_to=upload_to, blank=True, null=True, default='profile_photos/default.jpg')
 
     class Meta:
         verbose_name = 'Utente'

@@ -23,8 +23,8 @@
 - [x] Visualizzare dove lavori (o inviare richiesta di lavoro se non lavori)
 - [x] Visualizzare le proprie recensioni
 - [x] Valutare l'azienda dove lavori
+- [x] Modificare il profilo (COME ULTIMA COSA)
 - [] Visualizzare annunci di lavoro personalizzati
-- [] Modificare il profilo (COME ULTIMA COSA)
 
 # Profilo azienda
 - [x] Visualizzare i propri dati, username, nome ecc...
@@ -32,8 +32,7 @@
 - [x] Visualizzare quali lavoratori sono assunti
 - [x] Valutare i lavoratori assunti
 - [x] Visualizzare le proprie recensioni
-- [] Modificare il profilo (COME ULTIMA COSA)
-
+- [x] Modificare il profilo
 
 
 ## COMANDI UTILI ##

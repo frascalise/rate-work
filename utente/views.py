@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, RegistrationForm, AnnuncioLavoroForm, TagLavoratoreForm, RichiestaForm, RecensioneForm
+from .forms import LoginForm, RegistrationForm, ModificaProfiloForm, AnnuncioLavoroForm, TagLavoratoreForm, RichiestaForm, RecensioneForm
 from .models import Utente, AnnuncioLavoro, Lavoro, Recensione
 
 # Utilizzo questa funzione per evitare che da loggati si possa accedere alla registrazione e al login
@@ -41,6 +41,18 @@ def Profilo(request):
                 form = TagLavoratoreForm(instance=utente)
         return render(request, 'utente/profilo/profilo.html', context={'utente': utente, 'form': form, 'lavoroUtente': lavoroUtente, 'recensioni': recensioni})
     
+
+@login_required(login_url='login')
+def ModificaProfilo(request):
+    if request.method == 'POST':
+        form = ModificaProfiloForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profilo')
+    else:
+        form = ModificaProfiloForm(instance=request.user)
+    return render(request, 'utente/modificaProfilo/modifica.html', {'form': form})
+
 
 #@user_passes_test(not_authenticated, login_url='home')
 def Registrazione(request):
