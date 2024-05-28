@@ -151,7 +151,7 @@ def Richieste(request):
 
     return render(request, 'utente/richiesteLavoro/richieste.html', {'richiesteLavoro': richiesteLavoro, 'form': form, 'message': messages})
 
-
+@login_required(login_url='login')
 def RecensioneUtente(request, username):
 
     autoreRecensione = request.user
