@@ -4,20 +4,39 @@ from django.contrib import messages
 from .forms import CandidaturaForm
 
 def home(request):
+    utenti = Utente.objects.all()
     if request.user.is_authenticated:
-        utenti = Utente.objects.all()
         annunci = AnnuncioLavoro.objects.filter(is_available=True)
         utente = request.user
         hasAwork = False
+        
         if not utente.is_azienda:
+            user_tags = set(utente.tag.split()) if utente.tag else set() # Memorizzo i tag unici dell'utente
+            annunci_list = list(annunci)
             for i in Lavoro.objects.all():
                 if i.lavoratore == utente:
-                    annunci = annunci.exclude(id=i.annuncio.id)
+                    annunci_list = [annuncio for annuncio in annunci_list if annuncio.id != i.annuncio.id] # Rimuovo gli annunci per cui l'utente ha già inviato una candidatura
                     if i.stato == 'Accettato':
                         hasAwork = True
-        return render(request, 'home/homepage.html', {'utenti': utenti, 'annunci': annunci, 'utente': utente, 'hasAwork': hasAwork})
+
+            if user_tags:
+                # Calcola la pertinenza basata sui tag
+                def calcola_pertinenza(annuncio):
+                    annuncio_tags = set(annuncio.tag.split())
+                    common_tags = user_tags.intersection(annuncio_tags)
+                    return len(common_tags)
+
+                # Ordina gli annunci in base alla pertinenza
+                annunci_list.sort(key=calcola_pertinenza, reverse=True)
+
+            return render(request, 'home/homepage.html', {'utenti': utenti, 'annunci': annunci_list, 'utente': utente, 'hasAwork': hasAwork})
+        else:
+            return render(request, 'home/homepage.html', {'utenti': utenti, 'annunci': annunci, 'utente': utente})
     else:
-        return render(request, 'home/homepage.html')
+        annunci = AnnuncioLavoro.objects.filter(is_available=True).order_by('?')[:8] # Prendo 8 annunci a caso
+        return render(request, 'home/homepage.html', {'utenti': utenti, 'annunci': annunci, 'hasAwork': True})
+
+
 
 
 def Candidatura(request, id):

@@ -13,7 +13,7 @@ from .models import Utente, AnnuncioLavoro, Lavoro, Recensione
 def Profilo(request):
     utente = request.user
     recensioni = Recensione.objects.filter(destinatario=utente)
-
+    somma_recensioni = sum(recensione.valutazione for recensione in recensioni)
     if utente.is_azienda:
         richiesteLavoro = Lavoro.objects.filter(annuncio__azienda=utente, stato='In attesa')
         lavoriAccettati = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato')
@@ -27,7 +27,7 @@ def Profilo(request):
                 return redirect('profilo')
         else:
             form = AnnuncioLavoroForm()
-        return render(request, 'utente/profilo/profilo.html', {'utente': utente, 'form': form, 'annunci': annunci, 'richiesteLavoro': richiesteLavoro, 'lavoriAccettati': lavoriAccettati, 'recensioni': recensioni})
+        return render(request, 'utente/profilo/profilo.html', {'utente': utente, 'form': form, 'annunci': annunci, 'richiesteLavoro': richiesteLavoro, 'lavoriAccettati': lavoriAccettati, 'recensioni': recensioni, 'somma_recensioni': somma_recensioni})
     
     else:
         lavoroUtente = Lavoro.objects.filter(lavoratore=request.user, stato='Accettato').first()
@@ -39,7 +39,7 @@ def Profilo(request):
                 return redirect('profilo')
         else:
                 form = TagLavoratoreForm(instance=utente)
-        return render(request, 'utente/profilo/profilo.html', context={'utente': utente, 'form': form, 'lavoroUtente': lavoroUtente, 'recensioni': recensioni})
+        return render(request, 'utente/profilo/profilo.html', context={'utente': utente, 'form': form, 'lavoroUtente': lavoroUtente, 'recensioni': recensioni, 'somma_recensioni': somma_recensioni})
     
 
 @login_required(login_url='login')
@@ -150,6 +150,12 @@ def Richieste(request):
         form = RichiestaForm()
 
     return render(request, 'utente/richiesteLavoro/richieste.html', {'richiesteLavoro': richiesteLavoro, 'form': form, 'message': messages})
+
+
+@login_required(login_url='login')
+def Licenzia(request, username):
+    return "ciao"
+
 
 @login_required(login_url='login')
 def RecensioneUtente(request, username):

@@ -9,6 +9,7 @@ Stile
 
 Script
 - Javascript
+- JQuery
 
 Struttura pagine
 - HTML

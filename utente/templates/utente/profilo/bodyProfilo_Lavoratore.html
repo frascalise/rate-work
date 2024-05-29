@@ -59,19 +59,12 @@
     </form>
 
     
-    {% if recensioni %}
     <hr>
-    <h3> Recensioni su di te:</h3>
-        <div class='div-recensioni'>
-        {% for i in recensioni %}
-            <p> recensione di {{ i.mittente }} - posizione di lavoro: {{ i.lavoro.annuncio.titolo }} - {{ i.get_valutazione_display_text }} </p>
-            <p> {{ i.titolo}} </p>
-            <p> {{ i.commento }} </p>
-            <p> {{ i.data_pubblicazione|date:"d/m/Y" }} </p>
-            <hr><br>
-        {% endfor %}
-    {% endif %}
-    </div>
-
-
+    {% include 'utente/main_components/recensioni.html' %}
+    <hr>
+        <div class="alert alert-danger">
+            <h3>Licenziati: </h3>
+            <p><a href="{% url 'licenzia' lavoroUtente.annuncio.azienda %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenziati</button></a>
+                (una volta cliccato, l'azione sara' irreversibile)</p>
+        </div>
 </div>

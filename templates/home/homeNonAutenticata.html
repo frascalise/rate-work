@@ -1,0 +1,19 @@
+{% load static %}
+<div class='container-fluid'>
+    <div class="div-body">
+        <div class="subdiv-body">
+            <center>
+                <h1>Benvenuto in WorkRate!</h1>
+                <h5>Fai vedere a tutti quanto vali!</h5>
+                <img src="{% static 'imgs/cane.jpg' %}" alt="Foto cane">
+            </center>
+        </div>
+    </div>
+    <hr>
+    {% include "main_components/ricerca.html" %}
+    <hr>
+    {% include "main_components/annunci.html" %}
+    <center>
+        <h3> Accedi per vedere i tuoi annunci preferiti e per candidarti!</h3>
+    </center>
+</div>

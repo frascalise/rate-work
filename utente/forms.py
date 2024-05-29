@@ -111,7 +111,8 @@ class TagLavoratoreForm(forms.ModelForm):
     tag = forms.CharField(
         label='tag', 
         max_length=200,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False,
     )
 
     class Meta:

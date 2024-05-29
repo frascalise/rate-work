@@ -17,14 +17,18 @@
 - [x] Pulsanti per Login - Registrazione - Logout
 - [x] Ricerca di un utente (lavoratore o azienda) e visualizzarne il profilo (username, nome, recensioni)
 
+# Profilo anonimo
+- [x] Visualizzare 8 annunci di lavoro random
+- [x] Cercare gli utenti
+
 # Profilo lavoratore
 - [x] Visualizzare i propri dati, username, nome ecc...
 - [x] Impostare i tag per gli annunci personalizzati
 - [x] Visualizzare dove lavori (o inviare richiesta di lavoro se non lavori)
 - [x] Visualizzare le proprie recensioni
 - [x] Valutare l'azienda dove lavori
-- [x] Modificare il profilo (COME ULTIMA COSA)
-- [] Visualizzare annunci di lavoro personalizzati
+- [x] Modificare il profilo
+- [x] Visualizzare annunci di lavoro personalizzati
 
 # Profilo azienda
 - [x] Visualizzare i propri dati, username, nome ecc...

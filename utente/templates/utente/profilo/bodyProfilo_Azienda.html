@@ -87,23 +87,15 @@
     {% for i in lavoriAccettati %}
         <p>
             <b> {{ i.annuncio.titolo }} </b> | @{{ i.lavoratore }} 
-            <a  href="{% url 'recensione' i.lavoratore %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='margin-left:100px'>Recensione</button></a>
+            <a href="{% url 'recensione' i.lavoratore %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='margin-left:100px'>Recensione</button></a>
+            <a href="{% url 'licenzia' i.lavoratore %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenzia</button></a> (una volta cliccato, l'azione sara' irreversibile)
         </p>
         <hr><br>
     {% endfor %}
     </div>
 
     <hr>
-    <h3> Recensioni su di te:</h3>
-    <div class='div-recensioni'>
-    {% for i in recensioni %}
-        <p> recensione di {{ i.mittente }} - posizione di lavoro: {{ i.lavoro.annuncio.titolo }} - {{ i.get_valutazione_display_text }} </p>
-        <p> {{ i.titolo}} </p>
-        <p> {{ i.commento }} </p>
-        <p> {{ i.data_pubblicazione|date:"d/m/Y" }} </p>
-        <hr><br>
-    {% endfor %}
-    </div>
+    {% include 'utente/main_components/recensioni.html' %}
 
     {% if messages %}
     <script type="text/javascript">
@@ -113,6 +105,6 @@
             {% endfor %}
         });
     </script>
-{% endif %}
+    {% endif %}
 
 </div>
