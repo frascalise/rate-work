@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -14,6 +15,7 @@ def Profilo(request):
     utente = request.user
     recensioni = Recensione.objects.filter(destinatario=utente)
     somma_recensioni = sum(recensione.valutazione for recensione in recensioni)
+    # ----------- AZIENDA -----------
     if utente.is_azienda:
         richiesteLavoro = Lavoro.objects.filter(annuncio__azienda=utente, stato='In attesa')
         lavoriAccettati = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato')
@@ -27,8 +29,16 @@ def Profilo(request):
                 return redirect('profilo')
         else:
             form = AnnuncioLavoroForm()
-        return render(request, 'utente/profilo/profilo.html', {'utente': utente, 'form': form, 'annunci': annunci, 'richiesteLavoro': richiesteLavoro, 'lavoriAccettati': lavoriAccettati, 'recensioni': recensioni, 'somma_recensioni': somma_recensioni})
+        return render(request, 'utente/profilo/profilo.html', 
+                      {'utente': utente, 
+                       'form': form, 
+                       'annunci': annunci, 
+                       'richiesteLavoro': richiesteLavoro, 
+                       'lavoriAccettati': lavoriAccettati, 
+                       'recensioni': recensioni, 
+                       'somma_recensioni': somma_recensioni})
     
+    # ----------- LAVORATORE -----------
     else:
         lavoroUtente = Lavoro.objects.filter(lavoratore=request.user, stato='Accettato').first()
         if request.method == 'POST':
@@ -63,7 +73,7 @@ def Registrazione(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            utente = form.save()
+            form.save()
             return redirect('login')
         else:
             for field in form:
@@ -111,11 +121,11 @@ def ProfiloCercato(request, username):
     if utenti.exists():
         utente = utenti.first()
         Error404Msg = None
+        return render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 'message': Error404Msg})
     else:
         utente = None
         Error404Msg = 'Error: 404 - Utente non trovato'
-    
-    return render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 'message': Error404Msg})
+        return HttpResponseNotFound(render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 'message': Error404Msg}))
 
 
 @login_required(login_url='login')
@@ -133,9 +143,9 @@ def Richieste(request):
                 scelta = form.cleaned_data['scelta']
                 if scelta == 'Accetta':
                     lavoro.stato = 'Accettato'
-                    lavoro.save()
                     lavoro.annuncio.is_available = False
-                    # Elimina tutti gli altri lavori del lavoratore
+                    lavoro.save()
+                    # Elimina tutte le altre richieste di lavoro del lavoratore
                     Lavoro.objects.filter(lavoratore=lavoro.lavoratore).exclude(id=lavoro.id).delete()
                     
                 elif scelta == 'Rifiuta':
@@ -154,7 +164,21 @@ def Richieste(request):
 
 @login_required(login_url='login')
 def Licenzia(request, username):
-    return "ciao"
+    utente = request.user
+    utenteLicenziamento = Utente.objects.filter(username=username)
+
+    if not utenteLicenziamento.exists():
+        ErrorMsg = 'Error: 404 - Utente non trovato'
+        return HttpResponseNotFound(render(request, 'utente/error/error.html', {'message': ErrorMsg}))
+
+    if utente.is_azienda:
+        Lavoro.objects.filter(lavoratore=utenteLicenziamento).delete()
+        messages.success(request, 'Hai licenziato ' + utenteLicenziamento.username )
+    else:
+        Lavoro.objects.filter(lavoratore=utente).delete()
+        messages.success(request, 'Ti sei licenziato')
+    
+    return redirect('profilo')
 
 
 @login_required(login_url='login')

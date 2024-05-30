@@ -6,7 +6,7 @@ class UtenteAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'nome', 'tag', 'is_azienda', 'password', 'citta', 'immagine_profilo')
     
 class AnnuncioLavoroAdmin(admin.ModelAdmin):
-    list_display = ('titolo', 'azienda', 'data_pubblicazione', 'is_distanza')
+    list_display = ('titolo', 'azienda', 'data_pubblicazione', 'is_distanza', 'is_available', 'tag', 'range_stipendio')
 
 class LavoroAdmin(admin.ModelAdmin):
     list_display = ('annuncio', 'lavoratore', 'stato')

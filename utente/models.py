@@ -52,6 +52,7 @@ class Lavoro(models.Model):
         verbose_name = 'Lavoro'
         verbose_name_plural = 'Lavori'
 
+
 class Recensione(models.Model):
     
     mittente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensione_mittente', limit_choices_to={'is_azienda': True})

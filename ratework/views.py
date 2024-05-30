@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from utente.models import Utente, AnnuncioLavoro, Lavoro
 from django.contrib import messages
@@ -37,21 +38,25 @@ def home(request):
         return render(request, 'home/homepage.html', {'utenti': utenti, 'annunci': annunci, 'hasAwork': True})
 
 
-
-
 def Candidatura(request, id):
     if not request.user.is_authenticated:
         return redirect('home')
-
+    
+    form = CandidaturaForm()
     utente = request.user
     lavori = Lavoro.objects.filter(lavoratore=utente)
     annuncio = AnnuncioLavoro.objects.filter(id=id)
+
+    if not annuncio.exists():
+        ErrorMsg = 'Error: 404 - Annuncio non trovato'
+        return HttpResponseNotFound(render(request, 'candidatura/candidatura.html', {'annuncio': annuncio, 'message': ErrorMsg, 'form': form}))
+    
     for i in lavori:
         if i.stato == 'Accettato':
             messages.error(request, 'Hai già un lavoro in corso')
             return redirect('home')
 
-    if annuncio.exists() and annuncio.first().is_available and not utente.is_azienda:
+    if annuncio.first().is_available and not utente.is_azienda:
         annuncio = annuncio.first()
         azienda = annuncio.azienda
         ErrorMsg = None
@@ -67,8 +72,6 @@ def Candidatura(request, id):
                 )
                 messages.success(request, 'Candidatura inviata con successo')
                 return redirect('home')
-        else:
-            form = CandidaturaForm()
     else:
         annuncio = None
         azienda = None

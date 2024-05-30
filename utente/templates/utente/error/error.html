@@ -1,0 +1,23 @@
+{% extends "main_page.html" %}
+
+{% block head %}
+    {% load static %}
+    {% if utente.is_azienda %}
+        <link rel="stylesheet" href="{% static 'css/profilo/styleAzienda.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'css/profilo/styleLavoratore.css' %}">
+    {% endif %}
+{% endblock head %}
+
+{% block title %} Profilo Lavoratore {% endblock title %}
+
+{% block content %}
+
+    {% include "main_components/navbar.html" %}
+
+    <div class="alert alert-danger">
+        <h3>{{ message }}</h3>
+    </div>
+    
+    {% include "main_components/footer.html" %}
+{% endblock content %}

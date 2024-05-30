@@ -5,9 +5,9 @@
 - [x] Controlli sui vari input
 - [x] Utilizzo delle feature di Django
 - [x] Messaggi di conferma/errore dopo le operazioni
-- [] Test
-    - [] Testare registrazione con ogni tipo di input possibile
-    - [] Testare una vista
+- [x] Test
+    - [x] Testare registrazione con ogni tipo di input possibile
+    - [x] Testare una vista
 
 # Modello DB
 - [x] Fare modello ER
@@ -29,6 +29,7 @@
 - [x] Valutare l'azienda dove lavori
 - [x] Modificare il profilo
 - [x] Visualizzare annunci di lavoro personalizzati
+- [x] Possibilita' di licenziarsi
 
 # Profilo azienda
 - [x] Visualizzare i propri dati, username, nome ecc...
@@ -37,7 +38,7 @@
 - [x] Valutare i lavoratori assunti
 - [x] Visualizzare le proprie recensioni
 - [x] Modificare il profilo
-
+- [x] Possibilita' di licenziare i dipendenti
 
 ## COMANDI UTILI ##
 
