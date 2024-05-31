@@ -19,7 +19,7 @@ def Profilo(request):
     if utente.is_azienda:
         richiesteLavoro = Lavoro.objects.filter(annuncio__azienda=utente, stato='In attesa')
         lavoriAccettati = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato')
-        annunci = AnnuncioLavoro.objects.filter(azienda=utente)
+        annunci = AnnuncioLavoro.objects.filter(azienda=utente, is_available=True)
         if request.method == 'POST':
             form = AnnuncioLavoroForm(request.POST)
             if form.is_valid():
@@ -120,8 +120,22 @@ def ProfiloCercato(request, username):
     utenti = Utente.objects.filter(username=username)
     if utenti.exists():
         utente = utenti.first()
+        recensioni = Recensione.objects.filter(destinatario=utente)
+        somma_recensioni = sum(recensione.valutazione for recensione in recensioni)
         Error404Msg = None
-        return render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 'message': Error404Msg})
+        if utente.is_azienda:
+            dipendenti = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato').count()
+            lavoro = None
+        else:
+            dipendenti = None
+            if Lavoro.objects.filter(lavoratore=utente, stato='Accettato'):
+                lavoro = Lavoro.objects.filter(lavoratore=utente, stato='Accettato').first()
+        return render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 
+                                                                      'message': Error404Msg, 
+                                                                      'recensioni': recensioni, 
+                                                                      'somma_recensioni': somma_recensioni, 
+                                                                      'dipendenti': dipendenti, 
+                                                                      'lavoro': lavoro})
     else:
         utente = None
         Error404Msg = 'Error: 404 - Utente non trovato'
@@ -144,9 +158,13 @@ def Richieste(request):
                 if scelta == 'Accetta':
                     lavoro.stato = 'Accettato'
                     lavoro.annuncio.is_available = False
-                    lavoro.save()
+                    lavoro.annuncio.save()  # Salva le modifiche all'annuncio
+                    lavoro.save()           # Salva le modifiche al lavoro
                     # Elimina tutte le altre richieste di lavoro del lavoratore
                     Lavoro.objects.filter(lavoratore=lavoro.lavoratore).exclude(id=lavoro.id).delete()
+
+                    # Imposto su Rifiutato tutte le altre richieste di lavoro dell'annuncio
+                    Lavoro.objects.filter(annuncio=lavoro.annuncio).exclude(id=lavoro.id).update(stato='Rifiutato')
                     
                 elif scelta == 'Rifiuta':
                     lavoro.stato = 'Rifiutato'
@@ -174,7 +192,6 @@ def Licenzia(request, username):
     if utente.is_azienda:
         lavoro = Lavoro.objects.filter(lavoratore=utenteLicenziamento).first()
         if lavoro:
-            lavoro.annuncio.is_available = True
             lavoro.stato = 'Terminato'
             lavoro.save()
             messages.success(request, 'Hai licenziato ' + utenteLicenziamento.username)
@@ -183,7 +200,6 @@ def Licenzia(request, username):
     else:
         lavoro = Lavoro.objects.filter(lavoratore=utente).first()
         if lavoro:
-            lavoro.annuncio.is_available = True
             lavoro.stato = 'Terminato'
             lavoro.save()
             messages.success(request, 'Ti sei licenziato')
@@ -243,3 +259,15 @@ def RecensioneUtente(request, username):
     else:
         form = RecensioneForm()
     return render(request, 'utente/recensioneUtente/recensione.html', {'form': form, 'message': None, 'utenteRecensito': utenteRecensito, 'autoreRecensione': autoreRecensione})
+
+
+@login_required(login_url='login')
+def CancellaAnnuncio(request, id):
+    annuncio = AnnuncioLavoro.objects.filter(id=id).first()
+    if annuncio:
+        if annuncio.is_available:
+            annuncio.delete()
+            messages.success(request, 'Annuncio cancellato con successo')
+    else:
+        messages.error(request, 'Annuncio non trovato')
+    return redirect('profilo')

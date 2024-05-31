@@ -60,7 +60,8 @@
     {% for i in annunci %}
         <div class="card" style='width:500px'>
             <div class="card-body" >
-                <h5 class="card-title">{{ i.titolo }}</h5>
+                <h5 class="card-title">{{ i.titolo }} 
+                <a href={% url 'cancella_annuncio' i.id %}><button class="btn btn-danger" style='float:right'><i class="fa fa-trash"></i></button></a></h5>
                 <p class="card-text">{{ i.descrizione }}</p>
                 <div class="card-footer">
                     <small class="text-muted">
@@ -68,7 +69,7 @@
                         {% if i.is_distanza %} 
                             Lavoro a distanza
                         {% else %}
-                            Lavoro in sede
+                            Lavoro in sede 
                         {% endif %}
                         - {{ i.data_pubblicazione|date:"d/m/Y" }}
                     </small>
@@ -76,7 +77,7 @@
             </div>
         </div>
         {% empty %}
-        <p>Non hai ancora creato nessun annuncio</p>
+        <p>Non hai nessun annuncio disponibile</p>
     {% endfor %}
     </div>
 

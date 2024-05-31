@@ -19,7 +19,7 @@
             <h1>Profilo di {{ utente.nome }}</h1>
             <p><b>@{{ utente.username }}</b> | 
                 {% if lavoroUtente %}
-                    <i>Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.annuncio.azienda %}">{{ lavoroUtente.annuncio.azienda }}</a></i> | 
+                    Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.annuncio.azienda %}">{{ lavoroUtente.annuncio.azienda }}</a> come {{ lavoroUtente.annuncio.titolo }} | 
                 {% else %}
                     <i>Disoccupato</i> | 
                 {% endif %}
