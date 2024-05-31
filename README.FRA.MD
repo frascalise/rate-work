@@ -29,7 +29,7 @@
 - [x] Valutare l'azienda dove lavori
 - [x] Modificare il profilo
 - [x] Visualizzare annunci di lavoro personalizzati
-- [x] Possibilita' di licenziarsi
+- [] Possibilita' di licenziarsi
 
 # Profilo azienda
 - [x] Visualizzare i propri dati, username, nome ecc...
@@ -38,7 +38,7 @@
 - [x] Valutare i lavoratori assunti
 - [x] Visualizzare le proprie recensioni
 - [x] Modificare il profilo
-- [x] Possibilita' di licenziare i dipendenti
+- [] Possibilita' di licenziare i dipendenti
 
 ## COMANDI UTILI ##
 
