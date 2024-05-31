@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
-
 # Per evitare che le immagini abbiano lo stesso nome
 def upload_to(instance, filename):
     username = instance.username

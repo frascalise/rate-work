@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, Candidatura
+from .views import home, Candidatura, errorView
 from .inserimentoDb import initDb, inserimentoUtenti, inserimentoAnnunci
 from django.conf import settings
 from django.conf.urls.static import static
@@ -26,6 +26,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('utente/', include('utente.urls')),
     path('candidatura/<int:id>/', Candidatura, name='candidatura'),
+    path('<str:error>/', errorView, name='error'),
 ]
 
 if settings.DEBUG:

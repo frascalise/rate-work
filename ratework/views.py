@@ -79,3 +79,7 @@ def Candidatura(request, id):
         successMsg = None
     
     return render(request, 'candidatura/candidatura.html', {'annuncio': annuncio, 'azienda': azienda, 'message': ErrorMsg, 'form': form, 'successMsg': successMsg})
+
+
+def errorView(request, error):
+    return redirect('home')
