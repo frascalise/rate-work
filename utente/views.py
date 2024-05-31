@@ -165,19 +165,31 @@ def Richieste(request):
 @login_required(login_url='login')
 def Licenzia(request, username):
     utente = request.user
-    utenteLicenziamento = Utente.objects.filter(username=username)
+    utenteLicenziamento = Utente.objects.filter(username=username).first()
 
-    if not utenteLicenziamento.exists():
+    if not utenteLicenziamento:
         ErrorMsg = 'Error: 404 - Utente non trovato'
         return HttpResponseNotFound(render(request, 'utente/error/error.html', {'message': ErrorMsg}))
 
     if utente.is_azienda:
-        Lavoro.objects.filter(lavoratore=utenteLicenziamento).delete()
-        messages.success(request, 'Hai licenziato ' + utenteLicenziamento.username )
+        lavoro = Lavoro.objects.filter(lavoratore=utenteLicenziamento).first()
+        if lavoro:
+            lavoro.annuncio.is_available = True
+            lavoro.stato = 'Terminato'
+            lavoro.save()
+            messages.success(request, 'Hai licenziato ' + utenteLicenziamento.username)
+        else:
+            messages.error(request, 'Lavoro non trovato')
     else:
-        Lavoro.objects.filter(lavoratore=utente).delete()
-        messages.success(request, 'Ti sei licenziato')
-    
+        lavoro = Lavoro.objects.filter(lavoratore=utente).first()
+        if lavoro:
+            lavoro.annuncio.is_available = True
+            lavoro.stato = 'Terminato'
+            lavoro.save()
+            messages.success(request, 'Ti sei licenziato')
+        else:
+            messages.error(request, 'Lavoro non trovato')
+
     return redirect('profilo')
 
 
@@ -193,13 +205,21 @@ def RecensioneUtente(request, username):
 
     if utenteRecensito is None:
         message = 'ERRORE - UTENTE NON TROVATO'
-        return render(request, 'utente/recensioneUtente/recensione.html', {'message': message})
+        return HttpResponseNotFound(render(request, 'utente/recensioneUtente/recensione.html', {'message': message}))
     elif autoreRecensione.is_azienda == utenteRecensito.is_azienda:
         message = 'ERRORE - NON PUOI RECENSIRE UN UTENTE SIMILE A TE'
-        return render(request, 'utente/recensioneUtente/recensione.html', {'message': message})
+        return HttpResponseNotFound(render(request, 'utente/recensioneUtente/recensione.html', {'message': message}))
     elif utenteRecensito == autoreRecensione:
         message = 'ERRORE - NON PUOI RECENSIRE TE STESSO'
-        return render(request, 'utente/recensioneUtente/recensione.html', {'message': message})
+        return HttpResponseNotFound(render(request, 'utente/recensioneUtente/recensione.html', {'message': message}))
+    
+    if not autoreRecensione.is_azienda:
+        lavoro = Lavoro.objects.filter(annuncio__azienda=utenteRecensito, lavoratore=autoreRecensione, stato='Accettato').first()
+    else:
+        lavoro = Lavoro.objects.filter(annuncio__azienda=autoreRecensione, lavoratore=utenteRecensito, stato='Accettato').first()
+    if not lavoro:
+        message = 'ERRORE - NON PUOI RECENSIRE UN UTENTE CON CUI NON LAVORI'
+        return HttpResponseNotFound(render(request, 'utente/recensioneUtente/recensione.html', {'message': message}))
 
     if request.method == 'POST':
         form = RecensioneForm(request.POST)

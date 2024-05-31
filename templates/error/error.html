@@ -1,0 +1,24 @@
+{% extends "main_page.html" %}
+{% load static %}
+
+{% block head %}
+    {% load static %}
+    {% if utente.is_azienda %}
+        <link rel="stylesheet" href="{% static 'css/profilo/styleAzienda.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'css/profilo/styleLavoratore.css' %}">
+    {% endif %}
+{% endblock head %}
+
+{% block title %} Profilo Lavoratore {% endblock title %}
+
+{% block content %}
+
+    {% include "main_components/navbar.html" %}
+
+    <div class="alert alert-danger">
+        <h3>{{ message }}</h3>
+    </div>
+    <center><img src="{% static 'imgs/cane.jpg' %}" alt="Foto cane"></center>
+    {% include "main_components/footer.html" %}
+{% endblock content %}

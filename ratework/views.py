@@ -82,4 +82,5 @@ def Candidatura(request, id):
 
 
 def errorView(request, error):
-    return redirect('home')
+    message = '404 - Ti sei perso?'
+    return HttpResponseNotFound(render(request, 'error/error.html', {'message': message}))

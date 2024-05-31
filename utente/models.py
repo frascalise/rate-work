@@ -45,7 +45,7 @@ class AnnuncioLavoro(models.Model):
 class Lavoro(models.Model):
     annuncio = models.ForeignKey(AnnuncioLavoro, on_delete=models.CASCADE, related_name='lavori')
     lavoratore = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='lavori')
-    stato = models.CharField('stato', max_length=200, choices=[('In attesa', 'In attesa'), ('Accettato', 'Accettato'), ('Rifiutato', 'Rifiutato')], default='In attesa')
+    stato = models.CharField('stato', max_length=200, choices=[('In attesa', 'In attesa'), ('Accettato', 'Accettato'), ('Rifiutato', 'Rifiutato'), ('Terminato', 'Terminato')], default='In attesa')
 
     class Meta:
         verbose_name = 'Lavoro'
