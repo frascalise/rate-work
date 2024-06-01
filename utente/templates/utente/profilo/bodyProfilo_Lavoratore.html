@@ -11,15 +11,15 @@
 <div class='container'>
     <div class="my-2 my-lg-0 d-flex">
         {% if user.immagine_profilo %}
-                <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% else %}
-                <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% endif %}
-        <div class='titolo-profilo'>
+        <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        {% else %}
+        <img src="https://placehold.co/100x100/png" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        {% endif %}
+        <div class='titolo-profilo' style='margin-left:20px'>
             <h1>Profilo di {{ utente.nome }}</h1>
             <p><b>@{{ utente.username }}</b> | 
                 {% if lavoroUtente %}
-                    Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.annuncio.azienda %}">{{ lavoroUtente.annuncio.azienda }}</a> come {{ lavoroUtente.annuncio.titolo }} | 
+                    Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.getAzienda %}">{{ lavoroUtente.getAzienda }}</a> come {{ lavoroUtente.getTitolo }} | 
                 {% else %}
                     <i>Disoccupato</i> | 
                 {% endif %}

@@ -2,7 +2,7 @@
     <h3> Punteggio recensioni: [ {{ somma_recensioni }} ]</h3>
     <div class='div-recensioni'>
         {% for i in recensioni %}
-            <h5> {{ i.lavoro.annuncio.titolo }} - <b>{{ i.get_valutazione_display_text }}</b> </h5>
+            <h5> {{ i.lavoro.annuncio.titolo }} - <b>{{ i.getValutazione }}</b> </h5>
             <p> <b>{{ i.titolo}}</b></p>
             <p> {{ i.commento }} </p>
             <p> {{ i.data_pubblicazione|date:"d/m/Y" }} - da: @{{ i.mittente }} </p>

@@ -1,11 +1,11 @@
 <div class='container'>
     <div class="my-2 my-lg-0 d-flex">
         {% if user.immagine_profilo %}
-                <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% else %}
-                <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% endif %}
-        <div class='titolo-profilo'>
+        <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        {% else %}
+        <img src="https://placehold.co/100x100/png" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        {% endif %}
+        <div class='titolo-profilo' style='margin-left:20px'>
             <h1>Profilo Aziendale di {{ utente.nome }}</h1>
             <p>
                 <b>@{{ utente.username }}</b> | Dipendenti: {{ lavoriAccettati.count }} | Situato a: {{ utente.citta }} <!-- citta' --> | 
@@ -54,33 +54,7 @@
     </form>
     
     <hr>
-
-    <h3>I tuoi annunci:</h3>
-    <div class="card-deck">
-    {% for i in annunci %}
-        <div class="card" style='width:500px'>
-            <div class="card-body" >
-                <h5 class="card-title">{{ i.titolo }} 
-                <a href={% url 'cancella_annuncio' i.id %}><button class="btn btn-danger" style='float:right'><i class="fa fa-trash"></i></button></a></h5>
-                <p class="card-text">{{ i.descrizione }}</p>
-                <div class="card-footer">
-                    <small class="text-muted">
-                        Stipendio: {{ i.range_stipendio }} - 
-                        {% if i.is_distanza %} 
-                            Lavoro a distanza
-                        {% else %}
-                            Lavoro in sede 
-                        {% endif %}
-                        - {{ i.data_pubblicazione|date:"d/m/Y" }}
-                    </small>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p>Non hai nessun annuncio disponibile</p>
-    {% endfor %}
-    </div>
-
+    {% include 'utente/main_components/annunci.html' %}
     <hr>
     {% include 'utente/main_components/stampaDipendenti.html' %}
     <hr>

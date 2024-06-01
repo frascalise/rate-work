@@ -81,6 +81,5 @@ def Candidatura(request, id):
     return render(request, 'candidatura/candidatura.html', {'annuncio': annuncio, 'azienda': azienda, 'message': ErrorMsg, 'form': form, 'successMsg': successMsg})
 
 
-def errorView(request, error):
-    message = '404 - Ti sei perso?'
-    return HttpResponseNotFound(render(request, 'error/error.html', {'message': message}))
+def errore_404(request):
+    return HttpResponseNotFound(render(request, 'error/error.html', {'message': 'Error: 404 - Pagina non trovata'}))

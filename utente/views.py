@@ -6,26 +6,27 @@ from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, RegistrationForm, ModificaProfiloForm, AnnuncioLavoroForm, TagLavoratoreForm, RichiestaForm, RecensioneForm
 from .models import Utente, AnnuncioLavoro, Lavoro, Recensione
 
-# Utilizzo questa funzione per evitare che da loggati si possa accedere alla registrazione e al login
-#def not_authenticated(user):
-#    return not user.is_authenticated
-
+# Vista per la pagina del profilo - Azienda e Lavoratore - OK
 @login_required(login_url='login')
 def Profilo(request):
     utente = request.user
+
     recensioni = Recensione.objects.filter(destinatario=utente)
     somma_recensioni = sum(recensione.valutazione for recensione in recensioni)
+
     # ----------- AZIENDA -----------
     if utente.is_azienda:
-        richiesteLavoro = Lavoro.objects.filter(annuncio__azienda=utente, stato='In attesa')
-        lavoriAccettati = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato')
-        annunci = AnnuncioLavoro.objects.filter(azienda=utente, is_available=True)
+        richiesteLavoro = Lavoro.objects.filter(annuncio__azienda=utente, stato='In attesa')    # Per visualizzare le richieste di lavoro
+        lavoriAccettati = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato')    # Per visualizzare i dipendenti
+        annunci = AnnuncioLavoro.objects.filter(azienda=utente, is_available=True)              # Per visualizzare gli annunci di lavoro in corso
+
         if request.method == 'POST':
             form = AnnuncioLavoroForm(request.POST)
             if form.is_valid():
-                annuncio = form.save(commit=False)
+                annuncio = form.save(commit=False)  # Non salvo immediatamente nel DB
                 annuncio.azienda = request.user
-                annuncio.save()
+                annuncio.save()                     # Ora salvo nel DB
+                messages.success(request, 'Annuncio creato correttamente')
                 return redirect('profilo')
         else:
             form = AnnuncioLavoroForm()
@@ -49,9 +50,13 @@ def Profilo(request):
                 return redirect('profilo')
         else:
                 form = TagLavoratoreForm(instance=utente)
-        return render(request, 'utente/profilo/profilo.html', context={'utente': utente, 'form': form, 'lavoroUtente': lavoroUtente, 'recensioni': recensioni, 'somma_recensioni': somma_recensioni})
+        return render(request, 'utente/profilo/profilo.html', {'utente': utente, 
+                                                                'form': form, 
+                                                                'lavoroUtente': lavoroUtente, 
+                                                                'recensioni': recensioni, 
+                                                                'somma_recensioni': somma_recensioni})
     
-
+# Vista per la modifica del profilo - Azienda e Lavoratore - OK
 @login_required(login_url='login')
 def ModificaProfilo(request):
     if request.method == 'POST':
@@ -63,8 +68,7 @@ def ModificaProfilo(request):
         form = ModificaProfiloForm(instance=request.user)
     return render(request, 'utente/modificaProfilo/modifica.html', {'form': form})
 
-
-#@user_passes_test(not_authenticated, login_url='home')
+# Vista per la registrazione - OK
 def Registrazione(request):
     # Se l'utente è già loggato lo reindirizzo alla home
     if request.user.is_authenticated:
@@ -76,6 +80,7 @@ def Registrazione(request):
             form.save()
             return redirect('login')
         else:
+            # Controllo se ci sono dei messaggi di errore predefiniti di Django
             for field in form:
                 for error in field.errors:
                     messages.error(request, f"{field.label}: {error}")
@@ -86,8 +91,7 @@ def Registrazione(request):
 
     return render(request, 'utente/registrazione/registrazione.html', {'form': form})
 
-
-#@user_passes_test(not_authenticated, login_url='home')
+# Vista per il login - OK
 def Login(request):
     # Se l'utente è già loggato lo reindirizzo alla home
     if request.user.is_authenticated:
@@ -100,9 +104,9 @@ def Login(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            utente = authenticate(username=username, password=password)
+            utente = authenticate(username=username, password=password) # Se l'utente viene autenticato viene restituito un oggetto Utente, altrimenti None
             if utente is not None:
-                login(request, utente)
+                login(request, utente)  # Effettua il login
                 return redirect('home')
             else:
                 message = 'Credenziali non valide'
@@ -110,7 +114,7 @@ def Login(request):
             message = 'Errore nel login'
     return render(request, 'utente/login/login.html', {'form': form, 'message': message})
 
-
+# Vista per il logout - OK
 def Logout(request):
     logout(request)
     return redirect('home')
@@ -130,6 +134,8 @@ def ProfiloCercato(request, username):
             dipendenti = None
             if Lavoro.objects.filter(lavoratore=utente, stato='Accettato'):
                 lavoro = Lavoro.objects.filter(lavoratore=utente, stato='Accettato').first()
+            else:
+                lavoro = None
         return render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 
                                                                       'message': Error404Msg, 
                                                                       'recensioni': recensioni, 
@@ -160,10 +166,11 @@ def Richieste(request):
                     lavoro.annuncio.is_available = False
                     lavoro.annuncio.save()  # Salva le modifiche all'annuncio
                     lavoro.save()           # Salva le modifiche al lavoro
-                    # Elimina tutte le altre richieste di lavoro del lavoratore
-                    Lavoro.objects.filter(lavoratore=lavoro.lavoratore).exclude(id=lavoro.id).delete()
 
-                    # Imposto su Rifiutato tutte le altre richieste di lavoro dell'annuncio
+                    # Elimina tutte le altre richieste di lavoro del lavoratore tranne quelle con stato 'Terminato' e quella appena accettata
+                    Lavoro.objects.filter(lavoratore=lavoro.lavoratore).exclude(id=lavoro.id).exclude(stato='Terminato').delete()
+
+                    # Imposto su Rifiutato tutte le altre richieste di lavoro per quell'annuncio
                     Lavoro.objects.filter(annuncio=lavoro.annuncio).exclude(id=lavoro.id).update(stato='Rifiutato')
                     
                 elif scelta == 'Rifiuta':
@@ -271,3 +278,7 @@ def CancellaAnnuncio(request, id):
     else:
         messages.error(request, 'Annuncio non trovato')
     return redirect('profilo')
+
+
+def errore_404(request):
+    return HttpResponseNotFound(render(request, 'error/error.html', {'message': 'Error: 404 - Pagina non trovata'}))
