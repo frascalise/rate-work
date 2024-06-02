@@ -119,7 +119,7 @@ def Logout(request):
     logout(request)
     return redirect('home')
 
-
+# Vista per il profilo di un utente cercato - OK
 def ProfiloCercato(request, username):
     utenti = Utente.objects.filter(username=username)
     if utenti.exists():
@@ -127,10 +127,11 @@ def ProfiloCercato(request, username):
         recensioni = Recensione.objects.filter(destinatario=utente)
         somma_recensioni = sum(recensione.valutazione for recensione in recensioni)
         Error404Msg = None
-        if utente.is_azienda:
+        
+        if utente.is_azienda:   # Se l'utente è un'azienda allora prendo il numero di dipendenti
             dipendenti = Lavoro.objects.filter(annuncio__azienda=utente, stato='Accettato').count()
             lavoro = None
-        else:
+        else:                   # Se l'utente è un lavoratore allora prendo il lavoro in corso
             dipendenti = None
             if Lavoro.objects.filter(lavoratore=utente, stato='Accettato'):
                 lavoro = Lavoro.objects.filter(lavoratore=utente, stato='Accettato').first()
@@ -147,20 +148,21 @@ def ProfiloCercato(request, username):
         Error404Msg = 'Error: 404 - Utente non trovato'
         return HttpResponseNotFound(render(request, 'utente/profiloCercato/profilo.html', {'utente': utente, 'message': Error404Msg}))
 
-
+# Vista per le richieste di lavoro che ha un'azienda - OK
 @login_required(login_url='login')
 def Richieste(request):
     utente = request.user
     annunciUtente = AnnuncioLavoro.objects.filter(azienda=utente)
-    richiesteLavoro = Lavoro.objects.filter(annuncio__in=annunciUtente, stato='In attesa')
+    richiesteLavoro = Lavoro.objects.filter(annuncio__in=annunciUtente, stato='In attesa')  # Il campo annuncio di Lavoro deve essere uguale a uno degli annunciUtente
 
     if request.method == 'POST':
         form = RichiestaForm(request.POST)
-        lavoro_id = request.POST.get('lavoro_id')
+        lavoro_id = request.POST.get('lavoro_id')   # Prendo l'id del lavoro dal campo hidden del form
         try:
             lavoro = Lavoro.objects.get(id=lavoro_id)
+
             if form.is_valid():
-                scelta = form.cleaned_data['scelta']
+                scelta = form.cleaned_data['scelta']    # Prendo il dato pulito dal form
                 if scelta == 'Accetta':
                     lavoro.stato = 'Accettato'
                     lavoro.annuncio.is_available = False
@@ -176,8 +178,10 @@ def Richieste(request):
                 elif scelta == 'Rifiuta':
                     lavoro.stato = 'Rifiutato'
                     lavoro.save()
+
                 messages.success(request, 'Richiesta accettata con successo')
                 return redirect('profilo')
+            
         except Lavoro.DoesNotExist:
             messages.error(request, 'ERRORE - LAVORO INESISTENTE')
 
@@ -186,7 +190,7 @@ def Richieste(request):
 
     return render(request, 'utente/richiesteLavoro/richieste.html', {'richiesteLavoro': richiesteLavoro, 'form': form, 'message': messages})
 
-
+# Vista per il licenziamento di un lavoratore - OK
 @login_required(login_url='login')
 def Licenzia(request, username):
     utente = request.user
@@ -196,6 +200,7 @@ def Licenzia(request, username):
         ErrorMsg = 'Error: 404 - Utente non trovato'
         return HttpResponseNotFound(render(request, 'utente/error/error.html', {'message': ErrorMsg}))
 
+    # Se l'utente è un'azienda allora licenzio il lavoratore
     if utente.is_azienda:
         lavoro = Lavoro.objects.filter(lavoratore=utenteLicenziamento).first()
         if lavoro:
@@ -204,6 +209,8 @@ def Licenzia(request, username):
             messages.success(request, 'Hai licenziato ' + utenteLicenziamento.username)
         else:
             messages.error(request, 'Lavoro non trovato')
+
+    # Se l'utente è un lavoratore allora mi licenzio
     else:
         lavoro = Lavoro.objects.filter(lavoratore=utente).first()
         if lavoro:
@@ -215,17 +222,18 @@ def Licenzia(request, username):
 
     return redirect('profilo')
 
-
+# Vista per la recensione di un utente - OK
 @login_required(login_url='login')
 def RecensioneUtente(request, username):
-
     autoreRecensione = request.user
 
+    # Controllo se l'utente recensito esiste
     if Utente.objects.filter(username=username).exists():
         utenteRecensito = Utente.objects.get(username=username)
     else:
         utenteRecensito = None
 
+    # Se non esiste l'utente recensito - Se recensisco un'utente simile a me - Se recensisco me stesso
     if utenteRecensito is None:
         message = 'ERRORE - UTENTE NON TROVATO'
         return HttpResponseNotFound(render(request, 'utente/recensioneUtente/recensione.html', {'message': message}))
@@ -236,10 +244,13 @@ def RecensioneUtente(request, username):
         message = 'ERRORE - NON PUOI RECENSIRE TE STESSO'
         return HttpResponseNotFound(render(request, 'utente/recensioneUtente/recensione.html', {'message': message}))
     
-    if not autoreRecensione.is_azienda:
+    # Controllo se a scrivere la recensione e' un lavoratore o un'azienda e controllo che il lavoro esista
+    if not autoreRecensione.is_azienda: # Lavoratore
         lavoro = Lavoro.objects.filter(annuncio__azienda=utenteRecensito, lavoratore=autoreRecensione, stato='Accettato').first()
-    else:
+    else: # Azienda
         lavoro = Lavoro.objects.filter(annuncio__azienda=autoreRecensione, lavoratore=utenteRecensito, stato='Accettato').first()
+    
+    # Controllo che l'utente recensito sia un utente con cui lavoro
     if not lavoro:
         message = 'ERRORE - NON PUOI RECENSIRE UN UTENTE CON CUI NON LAVORI'
         return HttpResponseNotFound(render(request, 'utente/recensioneUtente/recensione.html', {'message': message}))
@@ -252,6 +263,7 @@ def RecensioneUtente(request, username):
             recensione.mittente = autoreRecensione
             recensione.destinatario = utenteRecensito
             
+            # Prendo il lavoro in corso tra i due utenti
             if autoreRecensione.is_azienda:
                 lavoro = Lavoro.objects.filter(annuncio__azienda=autoreRecensione, lavoratore=utenteRecensito, stato='Accettato').first()
             else:
@@ -267,18 +279,25 @@ def RecensioneUtente(request, username):
         form = RecensioneForm()
     return render(request, 'utente/recensioneUtente/recensione.html', {'form': form, 'message': None, 'utenteRecensito': utenteRecensito, 'autoreRecensione': autoreRecensione})
 
-
+# Vista per la cancellazione di un annuncio - OK
 @login_required(login_url='login')
 def CancellaAnnuncio(request, id):
     annuncio = AnnuncioLavoro.objects.filter(id=id).first()
-    if annuncio:
-        if annuncio.is_available:
-            annuncio.delete()
-            messages.success(request, 'Annuncio cancellato con successo')
+    utente = request.user
+    if utente.is_azienda:
+        if annuncio:
+            if annuncio.azienda == utente:
+                if annuncio.is_available:
+                    annuncio.delete()
+                    messages.success(request, 'Annuncio cancellato con successo')
+            else:
+                messages.error(request, "Non sei l'autore dell'annuncio")
+        else:
+            messages.error(request, 'Annuncio non trovato')
     else:
-        messages.error(request, 'Annuncio non trovato')
+        messages.error(request, "Non sei un'azienda")
     return redirect('profilo')
 
-
+# Vista per le pagine non trovate - OK
 def errore_404(request):
     return HttpResponseNotFound(render(request, 'error/error.html', {'message': 'Error: 404 - Pagina non trovata'}))

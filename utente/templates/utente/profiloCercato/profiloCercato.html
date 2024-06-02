@@ -8,11 +8,7 @@
 
         {% if utente.is_azienda %}
             <div class="my-2 my-lg-0 d-flex">
-                {% if user.immagine_profilo %}
                 <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-                {% else %}
-                <img src="https://placehold.co/100x100/png" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-                {% endif %}
                 <div class='titolo-profilo'>
                     <h1>Profilo Aziendale di {{ utente.nome }}</h1>
                     <p>
