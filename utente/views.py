@@ -274,10 +274,16 @@ def RecensioneUtente(request, username):
             return redirect('profilo')
         else:
             message = 'ERRORE - RECENSIONE NON VALIDA'
-            return render(request, 'utente/recensioneUtente/recensione.html', {'message': message, 'form': form, 'utenteRecensito': utenteRecensito, 'autoreRecensione': autoreRecensione})
+            return render(request, 'utente/recensioneUtente/recensione.html', {'message': message, 
+                                                                               'form': form, 
+                                                                               'utenteRecensito': utenteRecensito, 
+                                                                               'autoreRecensione': autoreRecensione})
     else:
         form = RecensioneForm()
-    return render(request, 'utente/recensioneUtente/recensione.html', {'form': form, 'message': None, 'utenteRecensito': utenteRecensito, 'autoreRecensione': autoreRecensione})
+    return render(request, 'utente/recensioneUtente/recensione.html', {'form': form, 
+                                                                       'message': None, 
+                                                                       'utenteRecensito': utenteRecensito, 
+                                                                       'autoreRecensione': autoreRecensione})
 
 # Vista per la cancellazione di un annuncio - OK
 @login_required(login_url='login')
