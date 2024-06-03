@@ -6,7 +6,7 @@ from utente.models import Utente, AnnuncioLavoro, Lavoro
 
 class CandidaturaViewTest(TestCase):
     def setUp(self):
-        # Crea un utente
+        # Crea un lavoratore
         self.utente = Utente.objects.create_user(username='luigi', password='testpassword', citta='reggio', is_azienda=False)
         # Crea un azienda
         self.azienda = Utente.objects.create_user(username='netflix', password='testpassword', citta='reggio', is_azienda=True)

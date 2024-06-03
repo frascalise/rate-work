@@ -202,7 +202,7 @@ def Licenzia(request, username):
 
     # Se l'utente è un'azienda allora licenzio il lavoratore
     if utente.is_azienda:
-        lavoro = Lavoro.objects.filter(lavoratore=utenteLicenziamento).first()
+        lavoro = Lavoro.objects.filter(lavoratore=utenteLicenziamento).filter(stato="Accettato").first() # Prendo il lavoro attualmente in corso
         if lavoro:
             lavoro.stato = 'Terminato'
             lavoro.save()
@@ -212,7 +212,7 @@ def Licenzia(request, username):
 
     # Se l'utente è un lavoratore allora mi licenzio
     else:
-        lavoro = Lavoro.objects.filter(lavoratore=utente).first()
+        lavoro = Lavoro.objects.filter(lavoratore=utente).filter(stato="Accettato").first() # Prendo il lavoro attualmente in corso
         if lavoro:
             lavoro.stato = 'Terminato'
             lavoro.save()

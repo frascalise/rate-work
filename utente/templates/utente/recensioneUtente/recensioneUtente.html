@@ -1,20 +1,41 @@
-<div class='container'>
+<div class='container-fluid' style="width:50%; margin:auto; border:2px solid #FF914D;">
     {% if message %}
         <div class="alert alert-danger">
             {{ message }}
         </div>
     {% else %}
 
-    <h2>Recensisci l'utente @{{ utenteRecensito }}</h2>
+   <center> <h2>Recensisci @{{ utenteRecensito }}</h2> </center>
+        <br>
     <form method="post">
         {% csrf_token %}
-        {{ form.valutazione }}
-        {{ form.titolo.label_tag }} {{ form.titolo }}
-        {{ form.commento.label_tag }} {{ form.commento }}
-        <button type="submit">Invia</button>
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-2 pt-0">Valutazione: </legend>
+                <div class="col-sm-10">
+                    {{ form.valutazione }}
+                </div>
+            </div>
+        </fieldset>
+        <br>
+        <div class="form-group row">
+            <label for="Titolo" class="col-sm-2 col-form-label">Titolo</label>
+            <div class="col-sm-10">
+            {{ form.titolo }}
+            </div>
+        </div>
+        <br>
+        <div class="form-group row">
+            <label for="Titolo" class="col-sm-2 col-form-label">Commento</label>
+            <div class="col-sm-10">
+                {{ form.commento }}
+                </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary my-2 my-sm-0 workrate-orange">Invia</button>
     </form>
     
     <br>
-    <p>Stai recensendo con il nome di @{{ autoreRecensione }}</p>
+    <p style="color:grey">Stai recensendo con il nome di @{{ autoreRecensione }}</p>
     {% endif %}    
 </div>

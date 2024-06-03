@@ -61,7 +61,7 @@
     <hr>
         <div class="alert alert-danger">
             <h3>Licenziati: </h3>
-            <p><a href="{% url 'licenzia' lavoroUtente.annuncio.azienda %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenziati</button></a>
+            <p><a href="{% url 'licenzia' lavoroUtente.getAzienda %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenziati</button></a>
                 (una volta cliccato, l'azione sara' irreversibile)</p>
         </div>
     {% endif %}

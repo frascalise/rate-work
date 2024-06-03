@@ -8,47 +8,16 @@
                 <a href="{% url 'modifica' %}">Modifica <i class="fa fa-edit"></i></a> 
             </p>
             <br>
+            {% if richiesteLavoro.count != 0 %}
             <p> Hai {{ richiesteLavoro.count }} richieste di lavoro in sospeso
                 <a href="{% url 'richieste' %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange">Visualizza</button></a>
             </p>
+            {% endif %}
         </div>
     </div>
 
     <hr>
-
-    <h3>Crea un annuncio:</h3>
-    
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="titolo">Titolo</label>
-                {{ form.titolo }}
-            </div>
-            <div class="form-group col-md-4">
-                <label for="rangeStipendio">Range Stipendio</label>
-                {{ form.range_stipendio }}
-            </div>
-            <div class="form-group col-md-4">
-                <label for="rangeStipendio">Tag</label>
-                {{ form.tag }}
-            </div>
-            <div class="form-group col-md-4">
-                <label class="control control--checkbox mb-0"><span class="caption">Lavoro a distanza?</span>
-                    {{ form.is_distanza }}
-                </label>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <label for="rangeStipendio">Descrizione</label>
-                {{ form.descrizione }}
-            </div>
-        </div>
-        <br>
-        <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Crea Annuncio</button>
-    </form>
-    
+    {% include 'utente/profilo/formAnnuncio.html' %}   
     <hr>
     {% include 'utente/main_components/annunci.html' %}
     <hr>

@@ -1,11 +1,22 @@
-<h3> Dipendenti:</h3>
-<div class='div-dipendenti'>
-{% for i in lavoriAccettati %}
-    <p>
-        <b> {{ i.annuncio.titolo }} </b> | @{{ i.lavoratore }} 
-        <a href="{% url 'recensione' i.lavoratore %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='margin-left:100px'>Recensione</button></a>
-        <a href="{% url 'licenzia' i.lavoratore %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenzia</button></a> (una volta cliccato, l'azione sara' irreversibile)
-    </p>
-    <hr><br>
-{% endfor %}
+<div class='container'>
+    <h3> Dipendenti:</h3>
+    <div class="row">
+        {% for i in lavoriAccettati %}
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5><b> @{{ i.lavoratore }} </b> <br> {{ i.annuncio.titolo }} </h5>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <a href="{% url 'recensione' i.lavoratore %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style=''>Recensione</button></a>
+                            <a href="{% url 'licenzia' i.lavoratore %}"><button type="button" class="btn btn-danger" style=''>Licenzia</button></a>
+                            <br><br>
+                            (Premere il tasto del licenziamento avra' effetti immediati)
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
