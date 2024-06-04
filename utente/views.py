@@ -152,43 +152,45 @@ def ProfiloCercato(request, username):
 @login_required(login_url='login')
 def Richieste(request):
     utente = request.user
-    annunciUtente = AnnuncioLavoro.objects.filter(azienda=utente)
-    richiesteLavoro = Lavoro.objects.filter(annuncio__in=annunciUtente, stato='In attesa')  # Il campo annuncio di Lavoro deve essere uguale a uno degli annunciUtente
+    if utente.is_azienda:
+        annunciUtente = AnnuncioLavoro.objects.filter(azienda=utente)
+        richiesteLavoro = Lavoro.objects.filter(annuncio__in=annunciUtente, stato='In attesa')  # Il campo annuncio di Lavoro deve essere uguale a uno degli annunciUtente
 
-    if request.method == 'POST':
-        form = RichiestaForm(request.POST)
-        lavoro_id = request.POST.get('lavoro_id')   # Prendo l'id del lavoro dal campo hidden del form
-        try:
-            lavoro = Lavoro.objects.get(id=lavoro_id)
+        if request.method == 'POST':
+            form = RichiestaForm(request.POST)
+            lavoro_id = request.POST.get('lavoro_id')   # Prendo l'id del lavoro dal campo hidden del form
+            try:
+                lavoro = Lavoro.objects.get(id=lavoro_id)
 
-            if form.is_valid():
-                scelta = form.cleaned_data['scelta']    # Prendo il dato pulito dal form
-                if scelta == 'Accetta':
-                    lavoro.stato = 'Accettato'
-                    lavoro.annuncio.is_available = False
-                    lavoro.annuncio.save()  # Salva le modifiche all'annuncio
-                    lavoro.save()           # Salva le modifiche al lavoro
+                if form.is_valid():
+                    scelta = form.cleaned_data['scelta']    # Prendo il dato pulito dal form
+                    if scelta == 'Accetta':
+                        lavoro.stato = 'Accettato'
+                        lavoro.annuncio.is_available = False
+                        lavoro.annuncio.save()  # Salva le modifiche all'annuncio
+                        lavoro.save()           # Salva le modifiche al lavoro
 
-                    # Elimina tutte le altre richieste di lavoro del lavoratore tranne quelle con stato 'Terminato' e quella appena accettata
-                    Lavoro.objects.filter(lavoratore=lavoro.lavoratore).exclude(id=lavoro.id).exclude(stato='Terminato').delete()
+                        # Elimina tutte le altre richieste di lavoro del lavoratore tranne quelle con stato 'Terminato' e quella appena accettata
+                        Lavoro.objects.filter(lavoratore=lavoro.lavoratore).exclude(id=lavoro.id).exclude(stato='Terminato').delete()
 
-                    # Imposto su Rifiutato tutte le altre richieste di lavoro per quell'annuncio
-                    Lavoro.objects.filter(annuncio=lavoro.annuncio).exclude(id=lavoro.id).update(stato='Rifiutato')
-                    
-                elif scelta == 'Rifiuta':
-                    lavoro.stato = 'Rifiutato'
-                    lavoro.save()
+                        # Imposto su Rifiutato tutte le altre richieste di lavoro per quell'annuncio
+                        Lavoro.objects.filter(annuncio=lavoro.annuncio).exclude(id=lavoro.id).update(stato='Rifiutato')
+                        
+                    elif scelta == 'Rifiuta':
+                        lavoro.stato = 'Rifiutato'
+                        lavoro.save()
 
-                messages.success(request, 'Richiesta accettata con successo')
-                return redirect('profilo')
-            
-        except Lavoro.DoesNotExist:
-            messages.error(request, 'ERRORE - LAVORO INESISTENTE')
+                    messages.success(request, 'Richiesta accettata con successo')
+                    return redirect('profilo')
+                
+            except Lavoro.DoesNotExist:
+                messages.error(request, 'ERRORE - LAVORO INESISTENTE')
 
+        else:
+            form = RichiestaForm()
+        return render(request, 'utente/richiesteLavoro/richieste.html', {'richiesteLavoro': richiesteLavoro, 'form': form, 'message': messages})
     else:
-        form = RichiestaForm()
-
-    return render(request, 'utente/richiesteLavoro/richieste.html', {'richiesteLavoro': richiesteLavoro, 'form': form, 'message': messages})
+        return HttpResponseNotFound(render(request, 'error/error.html', {'message': 'Error: 404 - Pagina non trovata'}))
 
 # Vista per il licenziamento di un lavoratore - OK
 @login_required(login_url='login')
