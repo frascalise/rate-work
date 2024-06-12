@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <div class='container'>
     <div class="my-2 my-lg-0 d-flex">
         <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
@@ -36,43 +35,4 @@
     </script>
     {% endif %}
 
-=======
-<div class='container'>
-    <div class="my-2 my-lg-0 d-flex">
-        <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-        <div class='titolo-profilo' style='margin-left:20px'>
-            <h1>Profilo Aziendale di {{ utente.nome }}</h1>
-            <p>
-                <b>@{{ utente.username }}</b> | Dipendenti: {{ lavoriAccettati.count }} | Situato a: {{ utente.citta }} <!-- citta' --> | 
-                <a href="{% url 'modifica' %}">Modifica <i class="fa fa-edit"></i></a> 
-            </p>
-            <br>
-            {% if richiesteLavoro.count != 0 %}
-            <p> Hai {{ richiesteLavoro.count }} richieste di lavoro in sospeso
-                <a href="{% url 'richieste' %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange">Visualizza</button></a>
-            </p>
-            {% endif %}
-        </div>
-    </div>
-
-    <hr>
-    {% include 'utente/profilo/formAnnuncio.html' %}   
-    <hr>
-    {% include 'utente/main_components/annunci.html' %}
-    <hr>
-    {% include 'utente/main_components/stampaDipendenti.html' %}
-    <hr>
-    {% include 'utente/main_components/recensioni.html' %}
-
-    {% if messages %}
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            {% for message in messages %}
-                alert("{{ message }}");
-            {% endfor %}
-        });
-    </script>
-    {% endif %}
-
->>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
 </div>

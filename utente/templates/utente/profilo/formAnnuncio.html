@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <div class="container form-annuncio">
     <h3 style="margin-top:0px" >Crea un annuncio:</h3>
     <form method="post">
@@ -31,38 +30,4 @@
           <button class="btn btn-primary my-2 my-sm-0 workrate-orange-form" type="submit" style="margin-bottom:500px;">Crea Annuncio</button>
         </div>
     </form>
-=======
-<div class="container form-annuncio">
-    <h3 style="margin-top:0px" >Crea un annuncio:</h3>
-    <form method="post">
-            {% csrf_token %}
-        <div class="row">
-          <div class="col">
-            <div class="form-group col-md-4" style="width: 500px;margin-bottom:10px">
-                <label for="titolo">Titolo</label>
-                {{ form.titolo }}
-            </div>
-            <div class="form-group col-md-4" style="width: 500px; margin-bottom:10px">
-                <label for="rangeStipendio">Range Stipendio</label>
-                {{ form.range_stipendio }}
-            </div>
-            <div class="form-group col-md-4" style="width: 500px;margin-bottom:10px">
-                <label for="rangeStipendio">Tag</label>
-                {{ form.tag }}
-            </div>
-            <label class="control control--checkbox mb-0"><span class="caption">Lavoro a distanza?</span>
-                {{ form.is_distanza }}
-            </label>
-          </div>
-          <div class="col">
-            <div class="form-group col-md-12">
-                <label for="rangeStipendio">Descrizione</label>
-                {{ form.descrizione }}
-            </div>
-            <br>
-          </div>
-          <button class="btn btn-primary my-2 my-sm-0 workrate-orange-form" type="submit" style="margin-bottom:500px;">Crea Annuncio</button>
-        </div>
-    </form>
->>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
 </div>
