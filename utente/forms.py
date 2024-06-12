@@ -69,7 +69,7 @@ class ModificaProfiloForm(forms.ModelForm):
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'citta': forms.TextInput(attrs={'class': 'form-control'}),
-            'immagine_profilo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'immagine_profilo': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
 class AnnuncioLavoroForm(forms.ModelForm):

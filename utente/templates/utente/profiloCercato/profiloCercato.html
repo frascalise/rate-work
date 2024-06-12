@@ -6,48 +6,43 @@
     </div>
     {% else %}
 
-    {% if utente.is_azienda %}
-        <div class="my-2 my-lg-0 d-flex">
-            {% if user.immagine_profilo %}
-                    <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-                {% else %}
-                    <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
-                {% endif %}
-            <div class='titolo-profilo'>
-                <h1>Profilo Aziendale di {{ utente.nome }}</h1>
-                <p>
-                    <b>@{{ utente.username }}</b> | Dipendenti: {{ lavoriAccettati.count }} | Situato a: {{ utente.citta }} <!-- citta' -->
-                </p>
+        {% if utente.is_azienda %}
+            <div class="my-2 my-lg-0 d-flex">
+                <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+                <div class='titolo-profilo' style='margin-left:20px'>
+                    <h1>Profilo Aziendale di {{ utente.nome }}</h1>
+                    <p>
+                        <b>@{{ utente.username }}</b> | Dipendenti: {{ dipendenti }} | Situato a: {{ utente.citta }}
+                    </p>
+                </div>
             </div>
-        </div>
-    {% else %}
-        <div class="my-2 my-lg-0 d-flex">
-            {% if user.immagine_profilo %}
-                    <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        {% else %}
+            <div class="my-2 my-lg-0 d-flex">
+                {% if utente.immagine_profilo %}
+                <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
                 {% else %}
-                    <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
+                <img src="https://placehold.co/100x100/png" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
                 {% endif %}
-            <div class='titolo-profilo'>
-                <h1>Profilo di {{ utente.nome }}</h1>
-                <p><b>@{{ utente.username }}</b> | 
-                    {% if lavoroUtente %}
-                        <i>Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.annuncio.azienda %}">{{ lavoroUtente.annuncio.azienda }}</a></i> | 
-                    {% else %}
-                        <i>Disoccupato</i> | 
-                    {% endif %}
-                    Situato a: {{ utente.citta }} |
-                    competenze: 
-                    {% if utente.tag %}
-                        {{ utente.tag }} 
-                    {% else %}
-                        nessuna competenza
-                    {% endif %}
-                </p> 
+                <div class='titolo-profilo' style='margin-left:20px'>
+                    <h1>Profilo di {{ utente.nome }}</h1>
+                    <p><b>@{{ utente.username }}</b> | 
+                        {% if lavoro %}
+                            Lavoratore presso <a href="{% url 'profilo_cercato' lavoro.getAzienda %}">{{ lavoro.getAzienda }}</a> come {{ lavoro.getTitolo }} | 
+                        {% else %}
+                            <i>Disoccupato</i> | 
+                        {% endif %}
+                        Situato a: {{ utente.citta }} |
+                        competenze: 
+                        {% if utente.tag %}
+                            {{ utente.tag }} 
+                        {% else %}
+                            nessuna competenza
+                        {% endif %}
+                    </p> 
+                </div>
             </div>
-        </div>
+        {% endif %}
+        <hr>
+        {% include 'utente/main_components/recensioni.html' %}
     {% endif %}
-
-
-    {% endif %}
-    
 </div>

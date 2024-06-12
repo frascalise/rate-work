@@ -10,16 +10,12 @@
 
 <div class='container'>
     <div class="my-2 my-lg-0 d-flex">
-        {% if user.immagine_profilo %}
-                <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% else %}
-                <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% endif %}
-        <div class='titolo-profilo'>
+        <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        <div class='titolo-profilo' style='margin-left:20px'>
             <h1>Profilo di {{ utente.nome }}</h1>
             <p><b>@{{ utente.username }}</b> | 
                 {% if lavoroUtente %}
-                    <i>Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.annuncio.azienda %}">{{ lavoroUtente.annuncio.azienda }}</a></i> | 
+                    Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.getAzienda %}">{{ lavoroUtente.getAzienda }}</a> come {{ lavoroUtente.getTitolo }} | 
                 {% else %}
                     <i>Disoccupato</i> | 
                 {% endif %}
@@ -65,7 +61,7 @@
     <hr>
         <div class="alert alert-danger">
             <h3>Licenziati: </h3>
-            <p><a href="{% url 'licenzia' lavoroUtente.annuncio.azienda %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenziati</button></a>
+            <p><a href="{% url 'licenzia' lavoroUtente.getAzienda %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenziati</button></a>
                 (una volta cliccato, l'azione sara' irreversibile)</p>
         </div>
     {% endif %}

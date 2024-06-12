@@ -15,9 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from .views import home, Candidatura, errorView
-from .inserimentoDb import initDb, inserimentoUtenti, inserimentoAnnunci
+from django.urls import path, re_path, include
+from .views import home, Candidatura, errore_404 
+from .inserimentoDb import initDb, inserimentoUtenti, inserimentoAnnunci, inserimentoLavoro, inserimentoRecensioniAziendali, inserimentoRecensioniUtente
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,15 +26,20 @@ urlpatterns = [
     path('', home, name='home'),
     path('utente/', include('utente.urls')),
     path('candidatura/<int:id>/', Candidatura, name='candidatura'),
-    path('<str:error>/', errorView, name='error'),
 ]
 
+# Cosi posso usare i file multimediali
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Se aggiunta in urlpatterns non carica le risorse statiche e multimediali?
+urlpatterns.append(re_path(r'^.*/$', errore_404))
 
 '''Popolamento del database
 initDb()
 inserimentoUtenti()
 inserimentoAnnunci()
+inserimentoLavoro()
+inserimentoRecensioniAziendali()
+inserimentoRecensioniUtente()
 ''' 

@@ -1,5 +1,5 @@
-from django.urls import path
-from .views import Profilo, Registrazione, Login, Logout, ProfiloCercato, Richieste, RecensioneUtente, ModificaProfilo, Licenzia
+from django.urls import path, re_path
+from .views import Profilo, Registrazione, Login, Logout, ProfiloCercato, Richieste, RecensioneUtente, ModificaProfilo, Licenzia, CancellaAnnuncio, errore_404
 
 urlpatterns = [
     path('', Profilo, name='profilo'),
@@ -10,5 +10,8 @@ urlpatterns = [
     path('richieste/', Richieste, name='richieste'),
     path('licenzia/<str:username>/', Licenzia, name='licenzia'),
     path('recensione/<str:username>/', RecensioneUtente, name='recensione'),
-    path('<str:username>/', ProfiloCercato, name='profilo_cercato'),
+    path('cancella_annuncio/<int:id>/', CancellaAnnuncio, name='cancella_annuncio'),
+    path('<str:username>/', ProfiloCercato, name='profilo_cercato'),    
 ]
+
+urlpatterns.append(re_path(r'^.*/$', errore_404))

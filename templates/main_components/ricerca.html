@@ -4,11 +4,11 @@
     <input type="text" id="search-input" class="form-control" placeholder="Cerca utenti per username...">
     <ul id="results-list" class="list-group mt-2">
         {% for utente in utenti %}
-            <a href="{% url 'profilo_cercato' utente.username %}"><li class="list-group-item user-item hidden">{{ utente.username }}</li></a>
+            <a href="{% url 'profilo_cercato' utente %}"><li class="list-group-item user-item hidden">{{ utente }}</li></a>
         {% endfor %}
     </ul>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $('#search-input').on('input', function() {
@@ -27,4 +27,5 @@
             }
         });
     });
+
 </script>

@@ -25,6 +25,20 @@ body {
     border: 2px solid #D17A42;
 }
 
+.workrate-orange-form{
+    background-color: #ffffff;
+    border: 2px solid #FF914D;
+    margin-right: 10px;
+    border-radius: 0px;
+    color: #FF914D;
+    font-weight: bold;
+}
+
+.workrate-orange-form:hover {
+    background-color: #D17A42;
+    border: 2px solid #D17A42;
+}
+
 .logout-btn {
     background-color: inherit;
     border: 0px;
@@ -49,4 +63,9 @@ body {
     padding: 10px;
     margin: 10px;
     height: 500px;
+}
+
+.form-annuncio{
+    background-color: #ff9d60;
+    border-radius: 20px;
 }

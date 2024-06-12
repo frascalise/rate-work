@@ -1,85 +1,25 @@
 <div class='container'>
     <div class="my-2 my-lg-0 d-flex">
-        {% if user.immagine_profilo %}
-                <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% else %}
-                <img src="https://placehold.co/100x100" alt="Logo Aziendale" style="width: 100px; height: 100px;" class='rounded-circle'>
-            {% endif %}
-        <div class='titolo-profilo'>
+        <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        <div class='titolo-profilo' style='margin-left:20px'>
             <h1>Profilo Aziendale di {{ utente.nome }}</h1>
             <p>
                 <b>@{{ utente.username }}</b> | Dipendenti: {{ lavoriAccettati.count }} | Situato a: {{ utente.citta }} <!-- citta' --> | 
                 <a href="{% url 'modifica' %}">Modifica <i class="fa fa-edit"></i></a> 
             </p>
             <br>
+            {% if richiesteLavoro.count != 0 %}
             <p> Hai {{ richiesteLavoro.count }} richieste di lavoro in sospeso
                 <a href="{% url 'richieste' %}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange">Visualizza</button></a>
             </p>
+            {% endif %}
         </div>
     </div>
 
     <hr>
-
-    <h3>Crea un annuncio:</h3>
-    
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="titolo">Titolo</label>
-                {{ form.titolo }}
-            </div>
-            <div class="form-group col-md-4">
-                <label for="rangeStipendio">Range Stipendio</label>
-                {{ form.range_stipendio }}
-            </div>
-            <div class="form-group col-md-4">
-                <label for="rangeStipendio">Tag</label>
-                {{ form.tag }}
-            </div>
-            <div class="form-group col-md-4">
-                <label class="control control--checkbox mb-0"><span class="caption">Lavoro a distanza?</span>
-                    {{ form.is_distanza }}
-                </label>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <label for="rangeStipendio">Descrizione</label>
-                {{ form.descrizione }}
-            </div>
-        </div>
-        <br>
-        <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Crea Annuncio</button>
-    </form>
-    
+    {% include 'utente/profilo/formAnnuncio.html' %}   
     <hr>
-
-    <h3>I tuoi annunci:</h3>
-    <div class="card-deck">
-    {% for i in annunci %}
-        <div class="card" style='width:500px'>
-            <div class="card-body" >
-                <h5 class="card-title">{{ i.titolo }}</h5>
-                <p class="card-text">{{ i.descrizione }}</p>
-                <div class="card-footer">
-                    <small class="text-muted">
-                        Stipendio: {{ i.range_stipendio }} - 
-                        {% if i.is_distanza %} 
-                            Lavoro a distanza
-                        {% else %}
-                            Lavoro in sede
-                        {% endif %}
-                        - {{ i.data_pubblicazione|date:"d/m/Y" }}
-                    </small>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p>Non hai ancora creato nessun annuncio</p>
-    {% endfor %}
-    </div>
-
+    {% include 'utente/main_components/annunci.html' %}
     <hr>
     {% include 'utente/main_components/stampaDipendenti.html' %}
     <hr>

@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
-# Per evitare che le immagini abbiano lo stesso nome
+# Per evitare che le immagini abbiano lo stesso nome - OK
 def upload_to(instance, filename):
     username = instance.username
     timestamp = timezone.now().strftime('%Y%m%d_%H%M%S')
@@ -11,7 +11,7 @@ def upload_to(instance, filename):
     new_filename = f'fotoProfilo_{username}_{timestamp}{filename_ext}'
     return os.path.join('profile_photos', new_filename)
 
-# Modello per l'utente
+# Modello per l'utente - OK
 class Utente(AbstractUser):
     nome = models.CharField('nome', max_length=100)
     citta = models.CharField('citta', max_length=100)
@@ -23,9 +23,9 @@ class Utente(AbstractUser):
         verbose_name = 'Utente'
         verbose_name_plural = 'Utenti'
 
-# Modello per gli annunci di Lavoro
+# Modello per gli annunci di Lavoro - OK
 class AnnuncioLavoro(models.Model):
-    azienda = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='annunci', limit_choices_to={'is_azienda': True})
+    azienda = models.ForeignKey(Utente, on_delete=models.CASCADE)
     titolo = models.CharField('titolo', max_length=200)
     descrizione = models.TextField('descrizione')
     data_pubblicazione = models.DateTimeField('data di pubblicazione', auto_now_add=True)
@@ -41,22 +41,27 @@ class AnnuncioLavoro(models.Model):
         verbose_name = 'Annuncio di Lavoro'
         verbose_name_plural = 'Annunci di Lavoro'
 
-# Modello per il lavoro
+# Modello per il lavoro - OK
 class Lavoro(models.Model):
-    annuncio = models.ForeignKey(AnnuncioLavoro, on_delete=models.CASCADE, related_name='lavori')
-    lavoratore = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='lavori')
+    annuncio = models.ForeignKey(AnnuncioLavoro, on_delete=models.CASCADE)
+    lavoratore = models.ForeignKey(Utente, on_delete=models.CASCADE)
     stato = models.CharField('stato', max_length=200, choices=[('In attesa', 'In attesa'), ('Accettato', 'Accettato'), ('Rifiutato', 'Rifiutato'), ('Terminato', 'Terminato')], default='In attesa')
 
     class Meta:
         verbose_name = 'Lavoro'
         verbose_name_plural = 'Lavori'
-
-
-class Recensione(models.Model):
     
-    mittente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensione_mittente', limit_choices_to={'is_azienda': True})
-    destinatario = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensione_destinatario', limit_choices_to={'is_azienda': False})
-    lavoro = models.ForeignKey(Lavoro, on_delete=models.CASCADE, related_name='recensioni')
+    def getAzienda(self):
+        return self.annuncio.azienda
+    
+    def getTitolo(self):
+        return self.annuncio.titolo
+
+# Modello per le recensioni - OK
+class Recensione(models.Model):
+    mittente = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensione_mittente')
+    destinatario = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name='recensione_destinatario')
+    lavoro = models.ForeignKey(Lavoro, on_delete=models.CASCADE)
     data_pubblicazione = models.DateTimeField('data di pubblicazione', auto_now_add=True)
     
     POSITIVO = 1
@@ -76,5 +81,5 @@ class Recensione(models.Model):
         verbose_name = 'Recensione'
         verbose_name_plural = 'Recensioni'
     
-    def get_valutazione_display_text(self):
+    def getValutazione(self):
         return dict(self.VALUTAZIONE_CHOICES)[int(self.valutazione)]
