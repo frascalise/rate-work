@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h2>Cerca un profilo</h2>
 
 <div class="search-bar">
@@ -28,4 +29,36 @@
         });
     });
 
+=======
+<h2>Cerca un profilo</h2>
+
+<div class="search-bar">
+    <input type="text" id="search-input" class="form-control" placeholder="Cerca utenti per username...">
+    <ul id="results-list" class="list-group mt-2">
+        {% for utente in utenti %}
+            <a href="{% url 'profilo_cercato' utente %}"><li class="list-group-item user-item hidden">{{ utente }}</li></a>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#search-input').on('input', function() {
+            var query = $(this).val().toLowerCase();
+            if (query) {
+                $('.user-item').each(function() {
+                    var username = $(this).text().toLowerCase();
+                    if (username.indexOf(query) !== -1) {
+                        $(this).removeClass('hidden');
+                    } else {
+                        $(this).addClass('hidden');
+                    }
+                });
+            } else {
+                $('.user-item').addClass('hidden');
+            }
+        });
+    });
+
+>>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
 </script>

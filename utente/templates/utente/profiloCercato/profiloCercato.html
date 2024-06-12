@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class='container'>
     
     {% if message %}
@@ -45,4 +46,53 @@
         <hr>
         {% include 'utente/main_components/recensioni.html' %}
     {% endif %}
+=======
+<div class='container'>
+    
+    {% if message %}
+    <div class="alert alert-danger">
+        <h1>{{ message }}</h1>
+    </div>
+    {% else %}
+
+        {% if utente.is_azienda %}
+            <div class="my-2 my-lg-0 d-flex">
+                <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+                <div class='titolo-profilo' style='margin-left:20px'>
+                    <h1>Profilo Aziendale di {{ utente.nome }}</h1>
+                    <p>
+                        <b>@{{ utente.username }}</b> | Dipendenti: {{ dipendenti }} | Situato a: {{ utente.citta }}
+                    </p>
+                </div>
+            </div>
+        {% else %}
+            <div class="my-2 my-lg-0 d-flex">
+                {% if utente.immagine_profilo %}
+                <img src="{{ utente.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+                {% else %}
+                <img src="https://placehold.co/100x100/png" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+                {% endif %}
+                <div class='titolo-profilo' style='margin-left:20px'>
+                    <h1>Profilo di {{ utente.nome }}</h1>
+                    <p><b>@{{ utente.username }}</b> | 
+                        {% if lavoro %}
+                            Lavoratore presso <a href="{% url 'profilo_cercato' lavoro.getAzienda %}">{{ lavoro.getAzienda }}</a> come {{ lavoro.getTitolo }} | 
+                        {% else %}
+                            <i>Disoccupato</i> | 
+                        {% endif %}
+                        Situato a: {{ utente.citta }} |
+                        competenze: 
+                        {% if utente.tag %}
+                            {{ utente.tag }} 
+                        {% else %}
+                            nessuna competenza
+                        {% endif %}
+                    </p> 
+                </div>
+            </div>
+        {% endif %}
+        <hr>
+        {% include 'utente/main_components/recensioni.html' %}
+    {% endif %}
+>>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
 </div>

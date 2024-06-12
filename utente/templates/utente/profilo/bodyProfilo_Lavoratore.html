@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% if messages %}
     <div class="messages">
         {% for message in messages %}
@@ -65,4 +66,73 @@
                 (una volta cliccato, l'azione sara' irreversibile)</p>
         </div>
     {% endif %}
+=======
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class='container'>
+    <div class="my-2 my-lg-0 d-flex">
+        <img src="{{ user.immagine_profilo.url }}" alt="Foto Profilo" style="width: 100px; height: 100px;" class='rounded-circle'>
+        <div class='titolo-profilo' style='margin-left:20px'>
+            <h1>Profilo di {{ utente.nome }}</h1>
+            <p><b>@{{ utente.username }}</b> | 
+                {% if lavoroUtente %}
+                    Lavoratore presso <a href="{% url 'profilo_cercato' lavoroUtente.getAzienda %}">{{ lavoroUtente.getAzienda }}</a> come {{ lavoroUtente.getTitolo }} | 
+                {% else %}
+                    <i>Disoccupato</i> | 
+                {% endif %}
+                Situato a: {{ utente.citta }} | <!-- citta' -->
+        
+                competenze: 
+                {% if utente.tag %}
+                   {{ utente.tag }} 
+                {% else %}
+                    nessuna competenza
+                {% endif %}
+                | <a href="{% url 'modifica' %}">Modifica <i class="fa fa-edit"></i></a> 
+            </p> 
+        </div>
+    </div>
+    {% if lavoroUtente %}
+        <hr>
+        <h3> Recensisci l'azienda dove lavori:</h3>
+        <p> Lascia una recensione per l'azienda dove lavori, aiuterai altri utenti a capire se è un posto adatto a loro
+            <a href="{% url 'recensione' lavoroUtente.annuncio.azienda %}">
+                <button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='margin-left:100px'>Scrivi una recensione</button>
+            </a>
+        </p>
+    {% endif %}
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-12 flex-d">
+                <label for="titolo">Inserisci le tue competenze separate da spazi, verranno usati come tag per trovare lavori piu pertinenti per te</label>
+                {{ form.tag }}
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary my-2 my-sm-0 workrate-orange" type="submit">Salva i tag</button>
+    </form>
+
+    
+    <hr>
+    {% include 'utente/main_components/recensioni.html' %}
+    {% if lavoroUtente %}
+    <hr>
+        <div class="alert alert-danger">
+            <h3>Licenziati: </h3>
+            <p><a href="{% url 'licenzia' lavoroUtente.getAzienda %}"><button type="button" class="btn btn-danger" style='margin-left:400px'>Licenziati</button></a>
+                (una volta cliccato, l'azione sara' irreversibile)</p>
+        </div>
+    {% endif %}
+>>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
 </div>

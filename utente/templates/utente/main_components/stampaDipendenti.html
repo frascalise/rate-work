@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class='container'>
     <h3> Dipendenti:</h3>
     <div class="row">
@@ -19,4 +20,27 @@
             </div>
         {% endfor %}
     </div>
+=======
+<div class='container'>
+    <h3> Dipendenti:</h3>
+    <div class="row">
+        {% for i in lavoriAccettati %}
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5><b> @{{ i.lavoratore }} </b> <br> {{ i.annuncio.titolo }} </h5>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <a href="{% url 'recensione' i.lavoratore %}"><button class="btn btn-primary my-2 my-sm-0" style='background-color:#5282d1'>Recensione</button></a>
+                            <a href="{% url 'licenzia' i.lavoratore %}"><button type="button" class="btn btn-danger" style=''>Licenzia</button></a>
+                            <br><br>
+                            (Premere il tasto del licenziamento avra' effetti immediati)
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+>>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
 </div>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h2>Annunci di Lavoro</h2>
 {% if user.is_authenticated %}
     <div class="form-group">
@@ -51,4 +52,59 @@
                 }
             });
         });
+=======
+<h2>Annunci di Lavoro</h2>
+{% if user.is_authenticated %}
+    <div class="form-group">
+        <input type="text" id="search-input-annunci" class="form-control" placeholder="Cerca annunci per titolo...">
+    </div>
+{% endif %}
+<br>
+    <div class="row" id="annunci-container">
+        {% for i in annunci %}
+            <div class="col-md-3 mb-3 annuncio-item">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ i.titolo }}</h5>
+                        <p class="card-text">{{ i.descrizione }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            Stipendio: {{ i.range_stipendio }} -
+                            {% if i.is_distanza %} 
+                                Lavoro a distanza
+                            {% else %}
+                                Lavoro in sede
+                            {% endif %}
+                            <br> Tag: {{ i.tag }}
+                            <br> da: <b>{{i.azienda}}</b> il {{ i.data_pubblicazione|date:"d/m/Y" }}
+                            {% if not utente.is_azienda and not hasAwork %}<a  href="{% url 'candidatura' i.id%}"><button class="btn btn-primary my-2 my-sm-0 workrate-orange" style='float:right'>Candidati</button></a>{% endif %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+        <p>Non sono presenti annunci, torna piu tardi</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#search-input-annunci').on('input', function() {
+                var query = $(this).val().toLowerCase();
+                if (query) {
+                    $('.annuncio-item').each(function() {
+                        var titolo = $(this).find('.card-title').text().toLowerCase();
+                        if (titolo.indexOf(query) !== -1) {
+                            $(this).removeClass('hidden');
+                        } else {
+                            $(this).addClass('hidden');
+                        }
+                    });
+                } else {
+                    $('.annuncio-item').removeClass('hidden');
+                }
+            });
+        });
+>>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
     </script>

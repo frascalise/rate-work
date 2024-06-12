@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% if recensioni %}
 <div class='container'>
     <h3> Punteggio recensioni: [{{ somma_recensioni }}]</h3>
@@ -32,4 +33,40 @@
         {% endfor %}
     </div>
 </div>
+=======
+{% if recensioni %}
+<div class='container'>
+    <h3> Punteggio recensioni: [{{ somma_recensioni }}]</h3>
+    <div class="row">
+        {% for i in recensioni %}
+            <div class="col-md-3 mb-3">
+                {% if i.getValutazione == "Positivo" %}
+                    <div class="card h-100" style="border:1px solid green">
+                {% elif i.getValutazione == "Negativo" %}
+                    <div class="card h-100" style="border:1px solid red">
+                {% elif i.getValutazione == "Neutro" %}
+                    <div class="card h-100" style="border:1px solid grey">
+                {% endif %}
+                    <div class="card-body">
+                        <h5> <b>{{ i.getValutazione }}</b> <br> {{ i.lavoro.annuncio.titolo }}</h5>
+                        <p> <b>{{ i.titolo}}</b></p>
+                        <p> {{ i.commento }} </p>
+                    </div>
+                    {% if i.getValutazione == "Positivo" %}
+                        <div class="card-footer" style="background-color:#81b877">   
+                    {% elif i.getValutazione == "Negativo" %}
+                        <div class="card-footer" style="background-color:#b87777">    
+                    {% elif i.getValutazione == "Neutro" %}
+                        <div class="card-footer" style="background-color:#969696"> 
+                    {% endif %}
+                        <small class="text-muted">
+                            <p style="color:black"><b> {{ i.data_pubblicazione|date:"d/m/Y" }} </b> - da: <b>@{{ i.mittente }}</b></p>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+>>>>>>> 6922e3ef929380bfbd6f2c6b085c610217e22633
 {% endif %}
